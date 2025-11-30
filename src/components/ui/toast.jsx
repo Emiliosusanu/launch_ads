@@ -20,14 +20,16 @@ const ToastViewport = React.forwardRef(({ className, ...props }, ref) => (
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-xl border p-5 shadow-2xl transition-all data-[swipe=move]:transition-none data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full data-[state=closed]:slide-out-to-right-full",
+  "group pointer-events-auto relative flex w-full items-start justify-between gap-3 overflow-hidden rounded-xl border px-4 py-4 md:px-5 md:py-5 shadow-2xl transition-all data-[swipe=move]:transition-none data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full data-[state=closed]:slide-out-to-right-full",
   {
     variants: {
       variant: {
-        default: "border-white/10 bg-[#16161a]/95 text-white backdrop-blur-md",
+        default:
+          "border-white/10 bg-gradient-to-br from-[#16161a]/95 to-[#0B0B0F]/98 text-white backdrop-blur-md",
         destructive:
-          "destructive group border-red-500/50 bg-red-950/90 text-red-50 backdrop-blur-md",
-        success: "border-green-500/30 bg-[#0B120D]/95 text-white backdrop-blur-md",
+          "destructive group border-red-500/60 bg-gradient-to-br from-[#2A0505]/95 via-[#1A0202]/95 to-[#050000]/98 text-red-50 backdrop-blur-md shadow-[0_18px_45px_rgba(0,0,0,0.9)]",
+        success:
+          "border-emerald-400/40 bg-gradient-to-br from-[#04120A]/95 via-[#03170D]/95 to-[#020806]/98 text-emerald-50 backdrop-blur-md",
       },
     },
     defaultVariants: {
@@ -77,7 +79,7 @@ ToastClose.displayName = ToastPrimitives.Close.displayName
 const ToastTitle = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={cn("text-sm font-semibold leading-tight", className)}
+    className={cn("text-sm md:text-base font-semibold leading-tight", className)}
     {...props}
   />
 ))
@@ -86,7 +88,7 @@ ToastTitle.displayName = ToastPrimitives.Title.displayName
 const ToastDescription = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={cn("text-sm opacity-80 leading-relaxed mt-1", className)}
+    className={cn("text-xs md:text-sm opacity-80 leading-relaxed mt-1", className)}
     {...props}
   />
 ))

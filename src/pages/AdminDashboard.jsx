@@ -392,6 +392,10 @@ const AdminDashboard = () => {
 
                 // Bump admin activity timestamp for background messages as well
                 supabase.from('ADSPILOT_name').update({ last_message_date: newMsg.created_at }).eq('email', adminEmail);
+
+                // Backstop: recalculate unread counts from the database to keep
+                // banner and badges in sync even if something was missed.
+                fetchUnreadCounts(adminEmail);
             }
         })
         .subscribe();

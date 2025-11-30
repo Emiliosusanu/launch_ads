@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, ArrowDownRight, Zap, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -55,9 +54,40 @@ const DemoSection = () => {
   const [activeTimeframe, setActiveTimeframe] = useState('7D');
   const [hoveredBar, setHoveredBar] = useState(null);
 
-  // Chart Data matching the visual curve in the image
-  // Bar #9 is the orange one
-  const chartData = [25, 35, 30, 45, 40, 65, 55, 70, 100, 75, 80, 95]; 
+  // Base metric data approximating a 30-day view
+  const baseMetrics = {
+    spend: 1240,
+    sales: 8920,
+    acos: 13.9,
+    orders: 842,
+  };
+
+  // Apply simple scaling for 7D vs 30D
+  const metrics = useMemo(() => {
+    const multiplier = activeTimeframe === '7D' ? 0.35 : 1; // about 1/3 for 7D
+    return {
+      spend: Math.round(baseMetrics.spend * multiplier),
+      sales: Math.round(baseMetrics.sales * multiplier),
+      orders: Math.round(baseMetrics.orders * multiplier),
+      // ACOS changes less dramatically with range – nudge slightly
+      acos:
+        activeTimeframe === '7D'
+          ? Math.max(8, baseMetrics.acos - 2)
+          : baseMetrics.acos,
+    };
+  }, [activeTimeframe, baseMetrics]);
+
+  // Base chart data matching the visual curve in the image (30D)
+  const baseChartData = [25, 35, 30, 45, 40, 65, 55, 70, 100, 75, 80, 95];
+
+  // Slightly lower overall volume for 7D while keeping shape
+  const chartData = useMemo(
+    () =>
+      activeTimeframe === '7D'
+        ? baseChartData.map((v) => Math.round(v * 0.5))
+        : baseChartData,
+    [activeTimeframe, baseChartData]
+  );
 
   return (
     <section className="py-16 md:py-32 px-4 md:px-6 bg-[#0B0B0F] relative overflow-hidden">
@@ -83,10 +113,10 @@ const DemoSection = () => {
 
           {/* Metrics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-             <MetricCard label="AD SPEND" value="$1,240" change="4.2%" isPositive={false} />
-             <MetricCard label="SALES" value="$8,920" change="12.5%" isPositive={true} />
-             <MetricCard label="ACOS" value="13.9%" change="2.1%" isPositive={true} />
-             <MetricCard label="ORDERS" value="842" change="8.4%" isPositive={true} />
+             <MetricCard label="AD SPEND" value={`$${metrics.spend.toLocaleString('en-US')}`} change="4.2%" isPositive={false} />
+             <MetricCard label="SALES" value={`$${metrics.sales.toLocaleString('en-US')}`} change="12.5%" isPositive={true} />
+             <MetricCard label="ACOS" value={`${metrics.acos.toFixed(1)}%`} change="2.1%" isPositive={true} />
+             <MetricCard label="ORDERS" value={metrics.orders.toLocaleString('en-US')} change="8.4%" isPositive={true} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 h-full">
@@ -116,7 +146,7 @@ const DemoSection = () => {
                     // Use specific index 8 for the orange bar to match image
                     const isOrange = i === 8; 
                     return (
-                      <div key={i} className="relative w-full h-full flex items-end group">
+                      <div key={i} className="relative w-full h-full flex items-end group z-10">
                          <motion.div
                            initial={{ height: 0 }}
                            animate={{ height: `${height}%` }}
@@ -135,7 +165,7 @@ const DemoSection = () => {
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: -44 }}
                                   exit={{ opacity: 0, y: 10 }}
-                                  className="absolute left-1/2 -translate-x-1/2 bg-[#0B0B0F] text-white text-[10px] font-bold px-2 py-1 rounded border border-white/10 whitespace-nowrap z-30 pointer-events-none shadow-[0_10px_25px_rgba(0,0,0,0.6)]"
+                                  className="absolute left-1/2 -translate-x-1/2 bg-[#0B0B0F] text-white text-[10px] font-bold px-2 py-1 rounded border border-white/10 whitespace-nowrap z-50 pointer-events-none shadow-[0_10px_25px_rgba(0,0,0,0.6)]"
                                 >
                                   ${height * 120}
                                 </motion.div>

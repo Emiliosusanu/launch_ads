@@ -7,7 +7,7 @@ export const marketingService = {
     // 1. Validate Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      throw new Error("Please enter a valid email address.");
+      throw new Error("That doesn\'t look like a valid email yet. Double-check and try again.");
     }
 
     // 2. Check for existing user
@@ -19,12 +19,12 @@ export const marketingService = {
 
     if (checkError) {
       console.error('Supabase check error:', checkError);
-      throw new Error("Could not verify email. Please try again.");
+      throw new Error("We couldn\'t verify this email right now. Please try again in a moment.");
     }
 
     if (existingUsers) {
       // User exists
-      throw new Error("This email is already registered.");
+      throw new Error("You\'re already on the AdsAutoPilot beta list with this email. Try logging in or use another address.");
     }
 
     // 3. Store in Supabase Database
@@ -35,7 +35,7 @@ export const marketingService = {
 
     if (error) {
       console.error('Supabase insert error:', error);
-      throw new Error("Could not subscribe. Please try again later.");
+      throw new Error("We couldn\'t add you to the beta list right now. Please try again in a few minutes.");
     }
     
     console.log('Successfully subscribed:', data);
