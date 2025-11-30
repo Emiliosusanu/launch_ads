@@ -3,6 +3,26 @@ import { useState, useEffect } from "react"
 const TOAST_LIMIT = 1
 
 let count = 0
+let notificationAudio
+
+function playNotificationSound() {
+  try {
+    if (typeof window === 'undefined') return
+
+    if (!notificationAudio) {
+      // File is served from public/notify.mp3
+      notificationAudio = new Audio('/notify.mp3')
+      notificationAudio.volume = 0.6
+    }
+
+    // Some browsers require a user gesture before audio can play.
+    // Ignore errors so toasts still work even if sound is blocked.
+    notificationAudio.currentTime = 0
+    notificationAudio.play().catch(() => {})
+  } catch {
+    // Silent fallback - do not break toasts if audio fails.
+  }
+}
 function generateId() {
   count = (count + 1) % Number.MAX_VALUE
   return count.toString()
@@ -57,6 +77,10 @@ export const toast = ({ ...props }) => {
       ...state.toasts,
     ].slice(0, TOAST_LIMIT),
   }))
+
+  // Trigger notification sound for every toast, especially useful for
+  // messaging-related notifications in user/admin dashboards.
+  playNotificationSound()
 
   return {
     id,

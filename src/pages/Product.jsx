@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const Product = () => {
   return (
@@ -21,6 +22,32 @@ const Product = () => {
             <li>No clear view of profitability across markets and campaigns.</li>
             <li>Difficulty scaling winning campaigns without destroying ACOS.</li>
           </ul>
+        </section>
+
+        <section className="space-y-4 bg-[#111118] border border-white/10 rounded-2xl p-5 md:p-8">
+          <h2 className="text-xl md:text-2xl font-semibold">Clarity instead of chaos</h2>
+          <p className="text-sm md:text-base text-gray-300">
+            Stop guessing what to fix in your Amazon Ads. Let clarity, not chaos, guide your campaigns.
+          </p>
+          <p className="text-sm md:text-base text-gray-300">
+            Built for authors who are tired of spending hours inside the ads dashboard. AdsAutoPilot helps you understand what’s happening, stay in control, and manage your campaigns with confidence&nbsp;— without the stress and overwhelm.
+          </p>
+          <div className="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <Button
+              onClick={() => {
+                const el = document.getElementById('join-beta');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="w-full sm:w-auto bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white font-bold px-6 py-2.5 rounded-xl text-sm md:text-base"
+            >
+              Start Free Trial &rarr;
+            </Button>
+            <p className="text-xs md:text-sm text-gray-400 max-w-md">
+              No credit card. Cancel anytime. Designed for authors managing ongoing ads.
+            </p>
+          </div>
         </section>
 
         <section className="grid md:grid-cols-2 gap-8">

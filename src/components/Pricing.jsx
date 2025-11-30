@@ -33,12 +33,18 @@ const Pricing = () => {
   const { toast } = useToast();
   const [billingCycle, setBillingCycle] = useState('monthly');
 
-  const handleSelect = (plan) => {
-    toast({
-      title: `Selected ${plan} Plan`,
-      description: "Redirecting to secure checkout...",
-      className: "bg-[#1F1F25] border-[#6A00FF] text-white"
-    });
+  const handleSelect = () => {
+    const el = document.getElementById('join-beta');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Fallback: show a subtle toast if the section is not found
+      toast({
+        title: 'Early Access',
+        description: 'Scroll down to the Early Access section to reserve your spot.',
+        className: 'bg-[#1F1F25] border-[#6A00FF] text-white',
+      });
+    }
   };
 
   return (
@@ -117,7 +123,7 @@ const Pricing = () => {
               </div>
 
               <Button
-                onClick={() => handleSelect(plan.name)}
+                onClick={handleSelect}
                 className={`w-full h-12 rounded-xl font-bold text-base transition-all ${
                   plan.highlight
                     ? 'bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white shadow-[0_0_20px_rgba(255,122,61,0.3)]'

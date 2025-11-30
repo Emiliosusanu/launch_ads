@@ -89,6 +89,7 @@ const AdminDashboard = () => {
   const [appSettings, setAppSettings] = useState([]);
   const [savingSettings, setSavingSettings] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isExportOpen, setIsExportOpen] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -366,11 +367,21 @@ const AdminDashboard = () => {
             // If we are currently viewing this conversation (either direction)
             if (activeEmail && (newMsg.sender_email === activeEmail || newMsg.receiver_email === activeEmail)) {
                 setChatMessages(prev => [...prev, newMsg]);
-                if (newMsg.sender_email === activeEmail) {
-                  markAsRead(newMsg.id, newMsg.sender_email);
-                }
+                // Do not auto-mark as read here; we only mark messages as
+                // viewed when the admin explicitly opens the conversation via
+                // fetchChatHistory, so unread badges remain accurate.
                 // Update admin activity when handling an in-view conversation
                 supabase.from('ADSPILOT_name').update({ last_message_date: newMsg.created_at }).eq('email', adminEmail);
+
+                // Even if the chat is open, still surface a subtle toast so the
+                // admin gets an audible notification.
+                if (newMsg.sender_email !== adminEmail) {
+                  toast({
+                    title: `Message from ${newMsg.sender_email.split('@')[0]}`,
+                    description: newMsg.message_text.substring(0, 30) + "...",
+                    className: "bg-[#1F1F25] border-[#2ECC71] text-white",
+                  });
+                }
             } else if (newMsg.receiver_email === adminEmail) {
                 // Background update
                 setUnreadCounts(prev => ({
@@ -598,6 +609,14 @@ const handleSendMessage = async () => {
               <Button
                 variant="outline"
                 size="sm"
+                className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5 hidden sm:inline-flex"
+                onClick={() => setIsExportOpen(true)}
+              >
+                <Save className="w-4 h-4 mr-2" /> Export Emails
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5"
                 onClick={() => {
                   setIsAllMessagesOpen(true);
@@ -733,11 +752,11 @@ const handleSendMessage = async () => {
             <div className="px-4 py-2.5 bg-[#14141d] border-b border-white/10 text-[11px] text-gray-400 flex flex-wrap gap-2">
               <div className="px-2 py-1 rounded-full bg-[#1c1c27] border border-white/10 flex items-center gap-1">
                 <span className="text-gray-500">Name</span>
-                <span className="text-gray-200 font-medium">{selectedUserForChat.full_name || '—'}</span>
+                <span className="text-gray-200 font-medium">{selectedUserForChat.full_name || '-'}</span>
               </div>
               <div className="px-2 py-1 rounded-full bg-[#1c1c27] border border-white/10 flex items-center gap-1">
                 <span className="text-gray-500">Email</span>
-                <span className="text-gray-200 font-mono text-[10px] truncate max-w-[140px]">{selectedUserForChat.email || '—'}</span>
+                <span className="text-gray-200 font-mono text-[10px] truncate max-w-[140px]">{selectedUserForChat.email || '-'}</span>
               </div>
               <div className="px-2 py-1 rounded-full bg-white/5 border border-white/10 flex items-center gap-1">
                 <span className="text-gray-500">Status</span>
@@ -835,6 +854,54 @@ const handleSendMessage = async () => {
                 >
                   {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Export Emails Dialog */}
+      <Dialog open={isExportOpen} onOpenChange={setIsExportOpen}>
+        <DialogContent className="bg-[#111118] border border-white/10 text-white w-full max-w-xl p-4 sm:p-6">
+          <DialogHeader>
+            <DialogTitle className="text-base sm:text-lg font-semibold">Export user emails</DialogTitle>
+            <DialogDescription className="text-xs sm:text-sm text-gray-400">
+              All emails are listed one per line for easy copy1paste into your email marketing tool.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4 space-y-3">
+            <div className="flex justify-between items-center gap-3">
+              <span className="text-xs sm:text-sm text-gray-400">
+                Total emails: <span className="font-semibold text-white">{users.filter(u => !!u.email).length}</span>
+              </span>
+              <Button
+                type="button"
+                size="sm"
+                className="h-8 px-3 text-xs bg-[#1F1F25] border border-white/15 hover:bg-white/10"
+                onClick={async () => {
+                  const text = users
+                    .map(u => u.email)
+                    .filter(Boolean)
+                    .join('\n');
+                  try {
+                    await navigator.clipboard.writeText(text);
+                    toast({
+                      title: 'Emails copied',
+                      description: 'All user emails are now in your clipboard.',
+                      className: 'bg-[#1F1F25] border-[#2ECC71] text-white',
+                    });
+                  } catch (e) {
+                    console.error('Clipboard copy failed', e);
+                  }
+                }}
+              >
+                Copy to clipboard
+              </Button>
+            </div>
+            <div className="rounded-lg border border-white/10 bg-[#0b0b12] p-3 max-h-[320px] overflow-y-auto text-[11px] sm:text-xs font-mono text-gray-100 whitespace-pre">
+              {users
+                .map(u => u.email)
+                .filter(Boolean)
+                .join('\n') || 'No emails found yet.'}
             </div>
           </div>
         </DialogContent>

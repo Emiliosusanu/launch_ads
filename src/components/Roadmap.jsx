@@ -90,7 +90,7 @@ const Roadmap = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <RoadmapCard 
             title="Global Multiregion Support"
-            date="Coming Q2 2025"
+            date="Coming Q2 2026"
             badge="Expansion"
             description="Manage campaigns across all Amazon marketplaces from a single dashboard. Auto-convert currencies and translate keywords instantly."
             progress={75}
@@ -101,7 +101,7 @@ const Roadmap = () => {
           
           <RoadmapCard 
             title="Generative AI Optimization"
-            date="Coming Q3 2025"
+            date="Coming Q3 2026"
             badge="Intelligence"
             description="Our neural engine will soon write new ad copy, suggest high-converting keywords, and orchestrate complex bidding strategies autonomously."
             progress={35}

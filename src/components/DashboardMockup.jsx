@@ -395,10 +395,10 @@ const KpiCard = ({ kpi, metricKey }) => (
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
     whileHover={{ y: -2 }}
-    className="bg-[#1F1F25] rounded-xl md:rounded-2xl p-3 md:p-6 border border-white/5 hover:border-[#6A00FF]/30 transition-all duration-300 group relative overflow-hidden min-h-[100px] md:min-h-[160px] flex flex-col justify-between shadow-sm hover:shadow-lg"
+    className="bg-[#1F1F25] rounded-xl md:rounded-2xl p-2.5 md:p-5 border border-white/5 hover:border-[#6A00FF]/30 transition-all duration-300 group relative overflow-hidden min-h-[90px] md:min-h-[150px] flex flex-col justify-between shadow-sm hover:shadow-lg"
   >
-    <div className="flex justify-between items-start mb-2 relative z-10">
-      <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-[#2d2d35] flex items-center justify-center group-hover:bg-[#6A00FF]/20 transition-colors duration-300">
+    <div className="flex justify-between items-start mb-1.5 md:mb-2 relative z-10">
+      <div className="w-7 h-7 md:w-11 md:h-11 rounded-lg md:rounded-xl bg-[#2d2d35] flex items-center justify-center group-hover:bg-[#6A00FF]/20 transition-colors duration-300">
         {metricKey === 'spend' && (
           <WalletIcon className="w-4 h-4 md:w-6 md:h-6 text-gray-400 group-hover:text-[#6A00FF] transition-colors" />
         )}
@@ -427,10 +427,10 @@ const KpiCard = ({ kpi, metricKey }) => (
       </div>
     </div>
     <div>
-      <div className="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wider mb-1 md:mb-2">
+      <div className="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wider mb-0.5 md:mb-2">
         {kpi.label}
       </div>
-      <div className="text-xl md:text-3xl font-bold tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-400 transition-all duration-300">
+      <div className="text-lg md:text-3xl font-bold tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-400 transition-all duration-300">
         {kpi.format(kpi.value)}
       </div>
     </div>

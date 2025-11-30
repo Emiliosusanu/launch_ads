@@ -76,7 +76,13 @@ const Hero = () => {
               <span className="text-gradient pb-2 inline-block">Automatically.</span>
             </h1>
 
-            <p className="text-base md:text-2xl text-[#F3F3F4]/80 mb-8 md:mb-14 max-w-3xl mx-auto font-normal leading-relaxed text-balance antialiased">Built for serious Amazon KDP authors. AdsAutoPilot watches your campaigns 24/7 to cut wasted spend, lower ACOS and grow royalties while you sleep.</p>
+            <p className="text-base md:text-2xl text-[#F3F3F4]/80 mb-4 md:mb-4 max-w-3xl mx-auto font-normal leading-relaxed text-balance antialiased">
+              Built for serious Amazon KDP authors. AdsAutoPilot watches your campaigns 24/7 to cut wasted spend, lower ACOS and grow royalties while you sleep.
+            </p>
+
+            <p className="hidden md:block text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-3xl mx-auto font-normal leading-relaxed text-balance">
+              Stop guessing what to fix in your Amazon Ads. AdsAutoPilot helps you understand what’s happening, stay in control, and manage your campaigns with confidence, without the stress and overwhelm.
+            </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-6 mb-4 md:mb-6 w-full sm:w-auto">
               <Button onClick={handleBetaClick} className="w-full sm:w-auto min-w-[220px] h-12 md:h-16 rounded-xl md:rounded-2xl bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white font-bold text-base md:text-lg transition-all duration-300 shadow-[0_0_40px_rgba(255,122,61,0.3)] border border-[#FF4F2C]/50 hover:scale-[1.02] active:scale-[0.98] group">

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -14,6 +13,7 @@ import Roadmap from '@/components/Roadmap';
 import FinalCTA from '@/components/FinalCTA';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
+import { Button } from '@/components/ui/button';
 import Login from '@/pages/Login';
 import Dashboard from '@/pages/Dashboard';
 import EditProfile from '@/pages/EditProfile';
@@ -33,6 +33,38 @@ import Legal from '@/pages/Legal';
 import Contact from '@/pages/Contact';
 import { AuthProvider } from '@/contexts/SupabaseAuthContext';
 
+const MidBetaNudge = () => (
+  <section className="px-4 md:px-6 py-10 md:py-14 bg-[#0B0B0F]">
+    <div className="container mx-auto max-w-4xl rounded-2xl md:rounded-3xl border border-white/10 bg-gradient-to-br from-[#16161a] to-[#0B0B0F] px-5 py-6 md:px-8 md:py-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)] text-center md:text-left flex flex-col md:flex-row items-center gap-5 md:gap-8">
+      <div className="flex-1 space-y-2 md:space-y-3">
+        <p className="text-xs md:text-[11px] uppercase tracking-[0.2em] text-[#FF7A3D] font-semibold">Thinking about the beta?</p>
+        <h3 className="text-xl md:text-2xl font-bold text-white">
+          So far, does this look like the help your ads needed?
+        </h3>
+        <p className="text-sm md:text-base text-gray-300 max-w-xl mx-auto md:mx-0">
+          If youre curious to see AdsAutoPilot in your own numbers, reserve a beta spot now and finish reading the page while we hold your place.
+        </p>
+      </div>
+      <div className="flex flex-col items-center gap-2 w-full md:w-auto">
+        <Button
+          onClick={() => {
+            const el = document.getElementById('join-beta');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          className="w-full md:w-auto bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white font-bold px-6 py-2.5 rounded-xl text-sm md:text-base shadow-[0_0_25px_rgba(255,122,61,0.4)]"
+        >
+          Yes, I want to try the beta
+        </Button>
+        <p className="text-[11px] md:text-xs text-gray-500">
+          No commitment. You can always leave later if its not for you.
+        </p>
+      </div>
+    </div>
+  </section>
+);
+
 const LandingPage = () => (
   <>
     <Header />
@@ -42,6 +74,7 @@ const LandingPage = () => (
       <Features />
       <RuleBuilder />
       <DemoSection />
+      <MidBetaNudge />
       <Pricing />
       <Testimonials />
       <Roadmap />

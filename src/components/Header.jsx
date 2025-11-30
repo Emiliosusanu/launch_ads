@@ -23,13 +23,19 @@ const Header = () => {
       const lastY = lastScrollYRef.current;
       const isScrollingDown = currentY > lastY;
 
-      // Only hide when scrolling down past a small threshold and menu is closed
-      if (!isMobileMenuOpen) {
+      // Only hide on smaller screens; keep header always visible on desktop
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile && !isMobileMenuOpen) {
+        // On mobile, hide when scrolling down past a small threshold
         if (isScrollingDown && currentY > 80) {
           setIsHidden(true);
         } else if (!isScrollingDown) {
           setIsHidden(false);
         }
+      } else {
+        // On desktop, never hide the header
+        setIsHidden(false);
       }
 
       lastScrollYRef.current = currentY;
@@ -74,15 +80,15 @@ const Header = () => {
       animate={{ y: isHidden ? -100 : 0 }}
       transition={{ duration: 0.4, ease: 'easeInOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out border-b ${
-        isScrolled ? 'bg-[#0B0B0F]/90 backdrop-blur-xl border-white/10 py-3' : 'bg-transparent border-transparent py-5'
+        isScrolled ? 'bg-[#0B0B0F]/90 backdrop-blur-xl border-white/10 py-1.5 md:py-2' : 'bg-transparent border-transparent py-2.5 md:py-3.5'
       }`}
     >
-      <nav className="container mx-auto px-6 flex items-center justify-between h-16">
+      <nav className="container mx-auto px-4 md:px-6 flex items-center justify-between h-12 md:h-14">
         <div className="flex items-center gap-3 cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
            <Logo />
         </div>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {['Features', 'Pricing', 'Testimonials'].map((item) => (
             <button
               key={item}

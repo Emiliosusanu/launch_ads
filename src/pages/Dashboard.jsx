@@ -609,14 +609,14 @@ const fetchUserDataAndMessages = async (email) => {
       </header>
 
       <main className="flex-1 container mx-auto p-4 md:p-8 max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-start">
           <div className="lg:col-span-2 space-y-8">{renderMainContent()}</div>
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 flex justify-center lg:justify-end">
             <div
-              className={`bg-[#111118] border border-white/10 rounded-2xl flex flex-col shadow-xl shadow-black/40 transition-all duration-200 ${
+              className={`w-full max-w-md bg-[#111118] border border-white/10 rounded-2xl flex flex-col shadow-xl shadow-black/40 transition-all duration-200 ${
                 isChatExpanded
-                  ? "fixed inset-0 z-40 h-full max-h-screen rounded-none"
-                  : "h-[70vh] md:h-[600px] sm:sticky sm:top-24"
+                  ? "fixed inset-0 z-40 h-full max-h-screen rounded-none max-w-none"
+                  : "h-[75vh] md:h-[640px] sm:sticky sm:top-24"
               }`}
             >
               {/* Extra close button when expanded on small screens */}

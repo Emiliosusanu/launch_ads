@@ -9,7 +9,7 @@ const Contact = () => {
           <p className="text-xs uppercase tracking-[0.2em] text-[#FF7A3D] font-semibold">Contact</p>
           <h1 className="text-3xl md:text-4xl font-bold">Get in touch</h1>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl">
-            We’d love to hear from you—whether you’re an author curious about the beta, a partner, or just have feedback about the site.
+            We’d love to hear from you, whether you’re an author curious about the beta, a partner, or just have feedback about the site.
           </p>
         </header>
 
