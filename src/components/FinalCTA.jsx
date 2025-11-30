@@ -19,7 +19,7 @@ const FinalCTA = () => {
       await marketingService.subscribe(email);
       toast({
         title: "Spot Secured! 🚀",
-        description: "We've sent your confirmation email. Welcome to the future of ads.",
+        description: "You can log in right away to complete your beta access. No email confirmation needed.",
         className: "bg-[#1F1F25] border-[#2ECC71] text-white"
       });
       setEmail('');

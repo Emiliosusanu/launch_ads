@@ -40,10 +40,10 @@ export const marketingService = {
     
     console.log('Successfully subscribed:', data);
 
-    // 4. Trigger simulated email sequence
+    // 4. Trigger simulated email sequence (purely informational)
     marketingService.triggerEmailSequence(email);
 
-    return { success: true, message: "Check your inbox for beta access details." };
+    return { success: true, message: "You can log in now to complete your beta access. No email confirmation is required." };
   },
 
   triggerEmailSequence: (email) => {
@@ -53,7 +53,7 @@ export const marketingService = {
     setTimeout(() => {
       marketingService.sendMockEmail({
         subject: "Welcome to AdsAutoPilot Beta",
-        preview: "You are on the list. Here is what happens next.",
+        preview: "Your spot is reserved. You can log in any time to complete access.",
       });
     }, 1500);
   },

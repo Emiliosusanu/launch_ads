@@ -141,7 +141,7 @@ const DashboardMockup = () => {
     return distribution.map((factor) => avg * factor);
   }, [selectedMetric, timeRange, kpiData]);
 
-  const maxChartValue = Math.max(...chartValues) * 1.2 || 100;
+  const maxChartValue = Math.max(...chartValues, 1) * 1.2 || 100;
 
   const navItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -322,8 +322,7 @@ const DashboardMockup = () => {
                 <div className="w-full h-px bg-white border-t border-dashed" />
                 <div className="w-full h-px bg-white border-t border-dashed" />
               </div>
-
-              {chartValues.map((value, i) => (
+              {(chartValues.length ? chartValues : Array(7).fill(1)).map((value, i) => (
                 <div key={i} className="relative flex-1 h-full flex items-end group/bar z-10">
                   <motion.div
                     key={selectedMetric}
