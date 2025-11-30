@@ -214,6 +214,54 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteUser = async (user) => {
+    if (!user?.id || !user?.email) return;
+
+    const confirmed = window.confirm(`Delete ${user.email}? This will also remove their messages.`);
+    if (!confirmed) return;
+
+    setActionLoadingId(user.id);
+    try {
+      // Delete all messages where this user is sender or receiver
+      const { error: msgError } = await supabase
+        .from('messages')
+        .delete()
+        .or(`sender_email.eq.${user.email},receiver_email.eq.${user.email}`);
+
+      if (msgError) throw msgError;
+
+      // Delete the user record
+      const { error: userError } = await supabase
+        .from('ADSPILOT_name')
+        .delete()
+        .eq('id', user.id);
+
+      if (userError) throw userError;
+
+      // Update local state
+      setUsers(prev => prev.filter(u => u.id !== user.id));
+      setUnreadCounts(prev => {
+        const next = { ...prev };
+        delete next[user.email];
+        return next;
+      });
+
+      toast({
+        title: 'User deleted',
+        description: `${user.email} and their messages have been removed.`,
+        className: 'bg-[#1F1F25] border-[#FF4D4D] text-white',
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Delete failed',
+        description: error.message,
+      });
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
   const fetchUsers = async () => {
     try {
         const { data, error } = await supabase
@@ -721,6 +769,7 @@ const handleSendMessage = async () => {
                                                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                                     <DropdownMenuItem onClick={() => handleUpdateStatus(user.id, user.email, 'approved')}><CheckCircle2 className="mr-2 h-4 w-4 text-green-400"/> Approve</DropdownMenuItem>
                                                     <DropdownMenuItem onClick={() => handleUpdateStatus(user.id, user.email, 'rejected')}><XCircle className="mr-2 h-4 w-4 text-red-400"/> Reject</DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => handleDeleteUser(user)} className="text-red-400 focus:bg-red-500/10"><Trash2 className="mr-2 h-4 w-4"/> Delete user</DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
                                         </div>

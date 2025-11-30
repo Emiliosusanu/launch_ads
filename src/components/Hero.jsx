@@ -34,7 +34,7 @@ const Hero = () => {
     <motion.section
       ref={heroRef}
       style={{ y: heroParallaxY }}
-      className="relative pt-24 md:pt-40 pb-12 md:pb-32 px-4 md:px-6 overflow-hidden bg-[#0B0B0F] min-h-[90vh] flex items-center"
+      className="relative pt-24 md:pt-40 pb-12 md:pb-32 px-4 md:px-6 overflow-hidden bg-[#0B0B0F] min-h-screen flex items-center"
     >
       {/* Vertical Purple Glow - Fixed position & overflow */}
       <motion.div
@@ -47,7 +47,7 @@ const Hero = () => {
       />
 
       <div className="container mx-auto max-w-7xl relative z-10">
-        <div className="grid lg:grid-cols-1 gap-8 md:gap-16 items-center text-center min-h-[calc(100vh-7rem)] lg:min-h-0">
+        <div className="grid lg:grid-cols-1 gap-8 md:gap-16 items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
