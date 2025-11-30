@@ -45,10 +45,9 @@ const Pricing = () => {
     <section id="pricing" className="py-24 md:py-32 px-6 bg-[#0B0B0F] relative">
       <div className="container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">
@@ -79,10 +78,9 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
               className={`flex flex-col p-8 rounded-3xl bg-[#1F1F25] border transition-all duration-300 relative group h-full ${
                 plan.highlight 
                   ? 'border-[#6A00FF] shadow-[0_0_40px_rgba(106,0,255,0.15)] scale-105 z-10' 

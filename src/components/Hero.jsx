@@ -409,15 +409,12 @@ const Hero = () => {
 
         <motion.div initial={{
         opacity: 0,
-        y: 80
-      }} whileInView={{
+        y: 40
+      }} animate={{
         opacity: 1,
         y: 0
-      }} viewport={{
-        once: true,
-        margin: "-50px"
       }} transition={{
-        duration: 1.2,
+        duration: 0.8,
         ease: [0.22, 1, 0.36, 1]
       }} className="relative mt-12 md:mt-24 mx-auto max-w-7xl px-0 sm:px-4">
           {/* Glow behind the dashboard */}

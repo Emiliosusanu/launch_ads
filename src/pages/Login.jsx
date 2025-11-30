@@ -80,7 +80,7 @@ const Login = () => {
       </div>
 
       <div className="container mx-auto px-6 py-8 relative z-10">
-         <div className="cursor-pointer" onClick={() => navigate('/')}>
+         <div>
             <Logo />
          </div>
       </div>

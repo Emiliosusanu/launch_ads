@@ -119,9 +119,8 @@ const DemoSection = () => {
                       <div key={i} className="relative w-full h-full flex items-end group">
                          <motion.div
                            initial={{ height: 0 }}
-                           whileInView={{ height: `${height}%` }}
-                           viewport={{ once: true }}
-                           transition={{ duration: 0.8, delay: i * 0.05, ease: "easeOut" }}
+                           animate={{ height: `${height}%` }}
+                           transition={{ duration: 0.6, ease: "easeOut" }}
                            onMouseEnter={() => setHoveredBar(i)}
                            onMouseLeave={() => setHoveredBar(null)}
                            className={`w-full rounded-sm transition-all duration-300 relative ${
