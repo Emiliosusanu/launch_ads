@@ -32,10 +32,9 @@ const Testimonials = () => {
     <section id="testimonials" className="py-24 md:py-32 px-6 bg-[#0B0B0F] relative">
       <div className="container mx-auto max-w-6xl">
          <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 tracking-tight">
@@ -47,10 +46,9 @@ const Testimonials = () => {
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: i * 0.06 }}
               className="flex flex-col p-8 rounded-3xl bg-[#1F1F25] border border-white/5 relative group hover:border-[#6A00FF]/20 transition-all hover:-translate-y-1 duration-300 h-full"
             >
               <Quote className="absolute top-8 right-8 text-white/5 w-12 h-12 group-hover:text-[#6A00FF]/10 transition-colors" />

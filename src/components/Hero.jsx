@@ -1,10 +1,10 @@
-
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { ChevronRight, Play, ShieldCheck, Star, ArrowRight, Lock, LayoutDashboard, Megaphone, ScrollText, BarChart2, Settings, Calendar, Download, TrendingUp, TrendingDown, ChevronDown, ShoppingCart, DollarSign, Percent } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
 const DashboardMockup = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showToast, setShowToast] = useState(false);
@@ -318,6 +318,13 @@ const Hero = () => {
   const {
     toast
   } = useToast();
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start end", "end start"]
+  });
+  const heroParallaxY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const glowOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.7]);
   const handleBetaClick = () => {
     const element = document.getElementById('join-beta');
     if (element) {
@@ -329,14 +336,14 @@ const Hero = () => {
   const handleVideoClick = () => {
     toast({
       title: "🎥 Video Demo",
-      description: "Loading the interactive walkthrough...",
+      description: "Video demo coming soon.",
       className: "bg-[#1F1F25] border-[#6A00FF] text-white"
     });
   };
-  return <section className="relative pt-24 md:pt-40 pb-12 md:pb-32 px-4 md:px-6 overflow-hidden bg-[#0B0B0F] min-h-[90vh] flex items-center">
+  return <motion.section ref={heroRef} style={{ y: heroParallaxY }} className="relative pt-24 md:pt-40 pb-12 md:pb-32 px-4 md:px-6 overflow-hidden bg-[#0B0B0F] min-h-[90vh] flex items-center">
       {/* Vertical Purple Glow - Fixed position & overflow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-[120%] bg-gradient-to-b from-[#6A00FF]/0 via-[#6A00FF]/40 to-[#6A00FF]/0 z-0 pointer-events-none" />
-      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[600px] md:w-[1000px] h-[600px] md:h-[1000px] bg-[#6A00FF]/5 rounded-full blur-[120px] pointer-events-none z-0" />
+      <motion.div style={{ opacity: glowOpacity }} className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-[120%] bg-gradient-to-b from-[#6A00FF]/0 via-[#6A00FF]/40 to-[#6A00FF]/0 z-0 pointer-events-none" />
+      <motion.div style={{ opacity: glowOpacity }} className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[600px] md:w-[1000px] h-[600px] md:h-[1000px] bg-[#6A00FF]/5 rounded-full blur-[120px] pointer-events-none z-0" />
       
       <div className="container mx-auto max-w-7xl relative z-10">
         <div className="grid lg:grid-cols-1 gap-8 md:gap-16 items-center text-center">
@@ -366,7 +373,7 @@ const Hero = () => {
               <ChevronRight className="w-3 h-3 md:w-3.5 md:h-3.5 text-gray-400" />
             </motion.div>
 
-            <h1 className="text-4xl sm:text-6xl md:text-8xl font-extrabold tracking-tight text-white mb-6 md:mb-10 text-balance leading-[1.1]">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white mb-6 md:mb-10 text-balance leading-[1.08]">
               Fix your Amazon Ads.
               <br />
               <span className="text-gradient pb-2 inline-block">Automatically.</span>
@@ -378,12 +385,6 @@ const Hero = () => {
               <Button onClick={handleBetaClick} className="w-full sm:w-auto min-w-[220px] h-12 md:h-16 rounded-xl md:rounded-2xl bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white font-bold text-base md:text-lg transition-all duration-300 shadow-[0_0_40px_rgba(255,122,61,0.3)] border border-[#FF4F2C]/50 hover:scale-[1.02] active:scale-[0.98] group">
                 Start Free Trial
                 <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button onClick={handleVideoClick} className="w-full sm:w-auto min-w-[220px] h-12 md:h-16 rounded-xl md:rounded-2xl bg-[#1F1F25]/50 hover:bg-[#2d2d35] border border-[#6A00FF]/30 hover:border-[#6A00FF] text-white font-medium text-base md:text-lg flex items-center justify-center gap-3 group transition-all shadow-[0_0_20px_rgba(106,0,255,0.1)] backdrop-blur-sm">
-                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                  <Play className="w-3 h-3 md:w-3.5 md:h-3.5 fill-current group-hover:text-[#C149FF] transition-colors" />
-                </div>
-                Watch Demo
               </Button>
             </div>
 
@@ -426,6 +427,6 @@ const Hero = () => {
           </div>
         </motion.div>
       </div>
-    </section>;
+    </motion.section>;
 };
 export default Hero;

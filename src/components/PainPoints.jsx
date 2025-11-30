@@ -44,10 +44,9 @@ const PainPoints = () => {
       <div className="container mx-auto max-w-7xl relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-6 md:gap-8">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
             <div className="flex items-center gap-2 text-[#FF4F2C] mb-4 md:mb-6 font-bold uppercase tracking-widest text-[10px] md:text-xs">
@@ -70,10 +69,9 @@ const PainPoints = () => {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-20px" }}
-                transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: index * 0.05, ease: "easeOut" }}
                 className="p-5 md:p-8 rounded-2xl md:rounded-3xl bg-[#1F1F25] border border-white/5 hover:border-[#FF4F2C]/40 hover:shadow-[0_0_30px_rgba(255,79,44,0.1)] transition-all duration-300 group h-full flex flex-col relative overflow-hidden"
               >
                 {/* Hover gradient background */}

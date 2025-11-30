@@ -40,12 +40,13 @@ const FinalCTA = () => {
       <div className="container mx-auto max-w-5xl relative z-10">
         <motion.div initial={{
         opacity: 0,
-        scale: 0.95
-      }} whileInView={{
+        scale: 0.96
+      }} animate={{
         opacity: 1,
         scale: 1
-      }} viewport={{
-        once: true
+      }} transition={{
+        duration: 0.5,
+        ease: "easeOut"
       }} className="relative rounded-[2rem] overflow-hidden bg-[#16161a] border border-white/10 p-8 md:p-16 text-center shadow-2xl">
           {/* Gradient Border Effect via pseudo-element */}
           <div className="absolute inset-0 rounded-[2rem] p-[1px] bg-gradient-to-br from-[#6A00FF] via-transparent to-[#FF7A3D] opacity-50 pointer-events-none -z-10" />

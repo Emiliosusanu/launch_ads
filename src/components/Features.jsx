@@ -50,58 +50,56 @@ const features = [
 
 const Features = () => {
   return (
-    <section id="features" className="py-24 md:py-32 px-6 bg-[#0B0B0F] relative overflow-hidden">
+    <section id="features" className="py-20 md:py-28 px-4 md:px-6 bg-[#0B0B0F] relative overflow-hidden">
       {/* Ambient Glow */}
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#FF7A3D]/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="container mx-auto max-w-7xl relative z-10">
+      <div className="container mx-auto max-w-6xl relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-24 text-center max-w-3xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="mb-16 md:mb-20 text-center max-w-3xl mx-auto"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#6A00FF]/10 text-[#C149FF] text-xs font-bold uppercase tracking-wider mb-8 border border-[#6A00FF]/20">
             <CheckCircle2 size={14} />
             <span>Powerhouse Features</span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight leading-tight text-balance">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 md:mb-7 tracking-tight leading-tight text-balance">
             Everything you need to scale.
             <br />
             <span className="text-gray-500">Nothing you don't.</span>
           </h2>
-          <p className="text-xl md:text-2xl text-gray-400 font-normal leading-relaxed">
+          <p className="text-base md:text-xl text-gray-400 font-normal leading-relaxed">
             Built by authors, for authors. We replaced the spreadsheets with code so you can get back to writing.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-20px" }}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-                className="group p-6 md:p-8 rounded-2xl md:rounded-3xl bg-[#1F1F25] border border-white/5 hover:border-[#6A00FF]/30 hover:shadow-[0_0_40px_rgba(106,0,255,0.12)] transition-all duration-500 relative overflow-hidden flex flex-col h-full"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.06, ease: "easeOut" }}
+                className="group p-5 md:p-7 rounded-2xl bg-[#1F1F25] border border-white/5 hover:border-[#6A00FF]/30 hover:shadow-[0_0_40px_rgba(106,0,255,0.12)] transition-all duration-500 relative overflow-hidden flex flex-col h-full"
               >
                 {/* Card Hover Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 
-                <div className="flex justify-between items-start mb-8 relative z-10">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon strokeWidth={1.5} size={32} />
+                <div className="flex justify-between items-start mb-6 md:mb-7 relative z-10">
+                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon strokeWidth={1.5} size={26} className="md:w-7 md:h-7" />
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-[#0B0B0F] border border-white/10 text-[10px] uppercase tracking-wider font-bold text-gray-400 group-hover:text-white group-hover:border-white/20 transition-colors">
+                  <span className="px-2.5 py-1 rounded-full bg-[#0B0B0F] border border-white/10 text-[10px] uppercase tracking-wider font-bold text-gray-400 group-hover:text-white group-hover:border-white/20 transition-colors">
                     {feature.tag}
                   </span>
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-4 relative z-10">{feature.title}</h3>
-                <p className="text-lg text-gray-400 leading-relaxed font-normal flex-1 relative z-10">
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4 relative z-10">{feature.title}</h3>
+                <p className="text-sm md:text-base text-gray-400 leading-relaxed font-normal flex-1 relative z-10">
                   {feature.description}
                 </p>
               </motion.div>

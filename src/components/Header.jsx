@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,16 +9,34 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const lastScrollYRef = useRef(0);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const currentY = window.scrollY;
+
+      setIsScrolled(currentY > 10);
+
+      const lastY = lastScrollYRef.current;
+      const isScrollingDown = currentY > lastY;
+
+      // Only hide when scrolling down past a small threshold and menu is closed
+      if (!isMobileMenuOpen) {
+        if (isScrollingDown && currentY > 80) {
+          setIsHidden(true);
+        } else if (!isScrollingDown) {
+          setIsHidden(false);
+        }
+      }
+
+      lastScrollYRef.current = currentY;
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMobileMenuOpen]);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -54,8 +71,8 @@ const Header = () => {
   return (
     <motion.header
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
+      animate={{ y: isHidden ? -100 : 0 }}
+      transition={{ duration: 0.4, ease: 'easeInOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out border-b ${
         isScrolled ? 'bg-[#0B0B0F]/90 backdrop-blur-xl border-white/10 py-3' : 'bg-transparent border-transparent py-5'
       }`}

@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/button';
 
 const RoadmapCard = ({ title, date, description, features, icon: Icon, progress, color, badge }) => (
   <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6 }}
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.45, ease: 'easeOut' }}
     className="group relative bg-[#16161a] rounded-3xl border border-white/5 overflow-hidden hover:border-white/10 transition-all duration-500"
   >
     {/* Ambient Glow */}
@@ -49,8 +48,8 @@ const RoadmapCard = ({ title, date, description, features, icon: Icon, progress,
           <div className="h-2 bg-[#1F1F25] rounded-full overflow-hidden">
             <motion.div 
               initial={{ width: 0 }}
-              whileInView={{ width: `${progress}%` }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
               className={`h-full rounded-full ${color.replace('bg-', 'bg-gradient-to-r from-white/20 to-')}`}
             />
           </div>
@@ -74,9 +73,9 @@ const Roadmap = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 text-white text-xs font-bold uppercase tracking-wider mb-6 border border-white/10"
           >
             <Sparkles size={14} className="text-[#FF7A3D]" />
