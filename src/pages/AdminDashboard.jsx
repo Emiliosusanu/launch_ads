@@ -7,7 +7,7 @@ import Logo from '@/components/ui/logo';
 import { 
     Search, MoreHorizontal, Loader2, CheckCircle2, XCircle, 
     Clock, MessageSquare, Send, LogOut, Users,
-    Eye, Settings, Link, Save
+    Eye, Settings, Link, Save, Trash2
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
