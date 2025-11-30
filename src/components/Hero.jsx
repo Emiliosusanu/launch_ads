@@ -47,7 +47,7 @@ const Hero = () => {
       />
 
       <div className="container mx-auto max-w-7xl relative z-10">
-        <div className="grid lg:grid-cols-1 gap-8 md:gap-16 items-center text-center">
+        <div className="grid lg:grid-cols-1 gap-8 md:gap-16 items-center text-center min-h-[calc(100vh-7rem)] lg:min-h-0">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
