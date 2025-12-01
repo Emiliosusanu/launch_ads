@@ -17,6 +17,16 @@
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden; /* Prevent horizontal scroll */
   }
+
+  /* Normalize form controls across browsers (especially Safari) */
+  select,
+  input[type="number"],
+  input[type="time"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border-radius: 0; /* let Tailwind classes control rounding */
+  }
   
   /* Dark Scrollbar */
   ::-webkit-scrollbar {
