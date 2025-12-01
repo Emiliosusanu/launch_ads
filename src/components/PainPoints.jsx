@@ -77,11 +77,15 @@ const PainPoints = () => {
                 {/* Hover gradient background */}
                 <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-[#0B0B0F] flex items-center justify-center mb-4 md:mb-8 ${point.accent} border border-white/5 group-hover:scale-110 transition-transform shadow-inner relative z-10`}>
-                  <Icon strokeWidth={2} size={20} className="md:w-[26px] md:h-[26px]" />
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-[#111118] flex items-center justify-center mb-4 md:mb-8 border border-white/10 shadow-sm group-hover:shadow-md group-hover:border-[#FF4F2C]/40 group-hover:bg-[#15151f] transition-colors transition-shadow duration-300 relative z-10">
+                  <Icon strokeWidth={1.8} size={20} className={`md:w-[24px] md:h-[24px] ${point.accent}`} />
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-4 group-hover:text-[#FF4F2C] transition-colors relative z-10 leading-tight">{point.title}</h3>
-                <p className="text-sm md:text-base text-gray-400 leading-relaxed flex-1 relative z-10 font-normal">{point.description}</p>
+                <h3 className="text-lg md:text-[1.25rem] font-semibold text-white mb-2 md:mb-3 group-hover:text-inherit transition-colors relative z-10 leading-tight">
+                  <span className={`group-hover:${point.accent.replace('text-','')}`}>{point.title}</span>
+                </h3>
+                <p className="text-sm md:text-[0.98rem] text-gray-400 leading-relaxed flex-1 relative z-10 font-normal">
+                  {point.description}
+                </p>
               </motion.div>
             );
           })}

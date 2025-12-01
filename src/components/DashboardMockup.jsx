@@ -154,15 +154,15 @@ const DashboardMockup = () => {
   return (
     <div className="relative rounded-xl md:rounded-2xl overflow-hidden bg-[#0B0B0F] border border-[#6A00FF]/20 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)] ring-1 ring-white/10 flex flex-col h-full font-sans text-base min-h-[600px] md:min-h-[800px]">
       {/* Browser Chrome */}
-      <div className="bg-[#16161a] border-b border-white/5 px-3 py-2 md:px-4 md:py-4 flex items-center gap-3 md:gap-4 select-none shrink-0 z-20 relative">
+      <div className="bg-[#16161a] border-b border-white/5 px-3 py-2 md:px-4 md:py-3.5 flex items-center gap-3 md:gap-3.5 select-none shrink-0 z-20 relative">
         <div className="flex gap-1.5 md:gap-2">
           <div className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-[#FF5F57]" />
           <div className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-[#FEBC2E]" />
           <div className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-[#28C840]" />
         </div>
         <div className="flex-1 h-8 md:h-10 bg-[#0B0B0F] rounded-lg border border-white/5 flex items-center px-3 md:px-4 gap-2 max-w-xl mx-auto opacity-50 transition-opacity hover:opacity-80 group cursor-text">
-          <Lock className="w-3 h-3 md:w-4 md:h-4 text-[#2ECC71]" />
-          <span className="text-[10px] md:text-sm text-gray-400 font-mono truncate group-hover:text-white transition-colors">
+          <Lock className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#2ECC71]" />
+          <span className="text-[10px] md:text-[13px] text-gray-400 font-mono truncate group-hover:text-white transition-colors">
             app.adsautopilot.com/dashboard
           </span>
         </div>
@@ -214,10 +214,10 @@ const DashboardMockup = () => {
         {/* Main Panel */}
         <div className="flex-1 bg-[#0B0B0F] p-3 md:p-8 overflow-y-auto custom-scrollbar relative w-full">
           {/* Header Section */}
-          <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-6 md:mb-10">
+          <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-6 md:mb-8">
             <div className="mb-2 md:mb-0">
-              <h2 className="text-lg md:text-4xl font-bold text-white mb-1 md:mb-2">Dashboard</h2>
-              <p className="text-xs md:text-base text-gray-500 font-medium">Welcome back, Author.</p>
+              <h2 className="text-lg md:text-3xl font-bold text-white mb-0.5 md:mb-1.5">Dashboard</h2>
+              <p className="text-xs md:text-sm text-gray-500 font-medium">Welcome back, Author.</p>
             </div>
             <div className="flex gap-2 w-full md:w-auto">
               <div className="h-10 md:h-14 px-3 md:px-5 rounded-lg md:rounded-xl bg-[#1F1F25] border border-white/10 flex items-center gap-2 md:gap-3 text-xs md:text-base text-gray-300 font-medium shadow-sm flex-1 md:flex-none whitespace-nowrap justify-center md:justify-start hover:border-white/20 transition-colors cursor-pointer">
@@ -231,7 +231,7 @@ const DashboardMockup = () => {
           </div>
 
           {/* KPI Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-6 md:mb-9">
             {Object.keys(kpiData).map((key) => {
               const kpi = kpiData[key];
               return <KpiCard key={key} kpi={kpi} metricKey={key} />;
@@ -239,16 +239,16 @@ const DashboardMockup = () => {
           </div>
 
           {/* Chart Section */}
-          <div className="bg-[#1F1F25] rounded-xl md:rounded-2xl border border-white/5 p-4 md:p-8 flex flex-col relative group min-h-[auto]">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-3 md:gap-4 z-10 relative">
+          <div className="bg-[#1F1F25] rounded-xl md:rounded-2xl border border-white/5 p-4 md:p-7 flex flex-col relative group min-h-[auto]">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-5 gap-3 md:gap-4 z-10 relative">
               <div className="flex flex-row items-center gap-3 w-full md:w-auto justify-between md:justify-start">
-                <h3 className="text-sm md:text-xl font-bold text-white whitespace-nowrap">Performance</h3>
+                <h3 className="text-sm md:text-lg font-bold text-white whitespace-nowrap">Performance</h3>
 
                 {/* Metric Selector */}
                 <div className="relative">
                   <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="flex items-center justify-between gap-2 text-xs md:text-base font-bold bg-[#0B0B0F] border border-white/10 px-3 py-2 md:px-4 md:py-3 rounded-lg md:rounded-xl text-white hover:border-[#6A00FF]/50 transition-colors min-w-[120px] md:min-w-[180px]"
+                    className="flex items-center justify-between gap-2 text-xs md:text-sm font-bold bg-[#0B0B0F] border border-white/10 px-3 py-2 md:px-4 md:py-2.5 rounded-lg md:rounded-xl text-white hover:border-[#6A00FF]/50 transition-colors min-w-[120px] md:min-w-[180px]"
                   >
                     <span>{kpiData[selectedMetric].label}</span>
                     <ChevronDown
@@ -314,7 +314,7 @@ const DashboardMockup = () => {
             </div>
 
             {/* Chart Render Area */}
-            <div className="relative z-20 w-full h-[240px] md:h-[350px] flex items-end justify-between gap-1.5 md:gap-4 px-1">
+            <div className="relative z-20 w-full h-[240px] md:h-[340px] flex items-end justify-between gap-1.5 md:gap-3.5 px-1">
               <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10 z-0">
                 <div className="w-full h-px bg-white border-t border-dashed" />
                 <div className="w-full h-px bg-white border-t border-dashed" />
@@ -344,12 +344,12 @@ const DashboardMockup = () => {
                           initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: -30, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                          className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-[#16161a] text-white text-[11px] md:text-xs font-bold px-2.5 py-1.5 md:px-3 md:py-2.5 rounded-lg border border-white/10 whitespace-nowrap z-50 shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col items-center gap-0.5 pointer-events-none min-w-[68px] md:min-w-[80px]"
+                          className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-[#16161a] text-white text-[11px] md:text-[11px] font-bold px-2.5 py-1.5 md:px-3 md:py-2 rounded-lg border border-white/10 whitespace-nowrap z-50 shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col items-center gap-0.5 pointer-events-none min-w-[68px] md:min-w-[80px]"
                         >
-                          <span className="text-[9px] md:text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
+                          <span className="text-[9px] md:text-[9px] text-gray-500 uppercase tracking-wider font-semibold">
                             Nov {18 + i}
                           </span>
-                          <span className="text-sm md:text-base font-bold text-[#FF7A3D]">
+                          <span className="text-xs md:text-sm font-bold text-[#FF7A3D]">
                             {metricFormatter(value, selectedMetric)}
                           </span>
                         </motion.div>
@@ -368,7 +368,7 @@ const DashboardMockup = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                className="absolute bottom-4 left-4 right-4 md:left:auto md:right-6 md:bottom-6 md:max-w-sm bg-[#1F1F25]/95 backdrop-blur-md border border-[#2ECC71]/30 p-3 md:p-5 rounded-xl md:rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8)] flex items-start gap-3 z-50 cursor-pointer hover:border-[#2ECC71]/60 transition-colors"
+                className="absolute bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:bottom-6 md:-translate-x-1/2 md:max-w-lg bg-[#1F1F25]/95 backdrop-blur-md border border-[#2ECC71]/30 p-3 md:p-5 rounded-xl md:rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8)] flex items-start gap-3 z-50 cursor-pointer hover:border-[#2ECC71]/60 transition-colors"
                 onClick={() => setShowToast(false)}
               >
                 <div className="w-2.5 h-2.5 mt-1 md:mt-1.5 rounded-full bg-[#2ECC71] shadow-[0_0_10px_#2ECC71] animate-pulse shrink-0" />
@@ -394,7 +394,7 @@ const KpiCard = ({ kpi, metricKey }) => (
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
     whileHover={{ y: -2 }}
-    className="bg-[#1F1F25] rounded-xl md:rounded-2xl p-2.5 md:p-5 border border-white/5 hover:border-[#6A00FF]/30 transition-all duration-300 group relative overflow-hidden min-h-[90px] md:min-h-[150px] flex flex-col justify-between shadow-sm hover:shadow-lg"
+    className="bg-[#1F1F25] rounded-xl md:rounded-2xl p-2.5 md:p-5 border border-white/5 hover:border-[#6A00FF]/30 transition-all duration-300 group relative overflow-hidden min-h-[90px] md:min-h-[150px] flex flex-col justify-between shadow-sm hover:shadow-lg md:min-w-[210px]"
   >
     <div className="flex justify-between items-start mb-1.5 md:mb-2 relative z-10">
       <div className="w-7 h-7 md:w-11 md:h-11 rounded-lg md:rounded-xl bg-[#2d2d35] flex items-center justify-center group-hover:bg-[#6A00FF]/20 transition-colors duration-300">

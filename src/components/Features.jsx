@@ -1,50 +1,56 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Settings, ShieldAlert, Activity, GitBranch, FlaskConical, LayoutDashboard, CheckCircle2 } from 'lucide-react';
+import { LineChart, ShieldCheck, Clock, SlidersHorizontal, Search, LayoutDashboard, CheckCircle2 } from 'lucide-react';
 
 const features = [
   {
-    icon: Settings,
+    icon: LineChart,
     title: "AI Bid Optimization",
     description: "Our algorithms analyze historical data to adjust bids in real-time, ensuring you hit your target ACOS perfectly.",
     gradient: "from-[#6A00FF] to-[#C149FF]",
-    tag: "Core Tech"
+    tag: "Core Tech",
+    iconColor: "text-[#C49BFF]"
   },
   {
-    icon: ShieldAlert,
+    icon: ShieldCheck,
     title: "Negative Keyword Shield",
     description: "Automatically detects and blocks search terms that are wasting budget without generating sales. No more leaks.",
     gradient: "from-[#FF4F2C] to-[#FF7A3D]",
-    tag: "Money Saver"
+    tag: "Money Saver",
+    iconColor: "text-[#FF9980]"
   },
   {
-    icon: Activity,
+    icon: Clock,
     title: "24/7 Vigilance",
     description: "The system never sleeps. It monitors your campaigns continuously, reacting to market changes instantly.",
     gradient: "from-[#4DA6FF] to-[#2ECC71]",
-    tag: "Always On"
+    tag: "Always On",
+    iconColor: "text-[#7FD1FF]"
   },
   {
-    icon: GitBranch,
+    icon: SlidersHorizontal,
     title: "Smart Rule Engine",
     description: "Create 'If This Then That' automation rules tailored to your specific strategy. Infinite flexibility.",
     gradient: "from-[#C149FF] to-[#FF4F2C]",
-    tag: "Customizable"
+    tag: "Customizable",
+    iconColor: "text-[#FFB3E6]"
   },
   {
-    icon: FlaskConical,
+    icon: Search,
     title: "Keyword Harvester",
     description: "Automatically finds new profitable keywords from auto campaigns and promotes them to manual campaigns.",
     gradient: "from-[#FF7A3D] to-[#FFB84D]",
-    tag: "Growth"
+    tag: "Growth",
+    iconColor: "text-[#FFD27A]"
   },
   {
     icon: LayoutDashboard,
     title: "Crystal Clear Dashboard",
     description: "See your true profit, royalties, and ad spend in one unified view across all marketplaces.",
     gradient: "from-[#2ECC71] to-[#4DA6FF]",
-    tag: "Analytics"
+    tag: "Analytics",
+    iconColor: "text-[#8FE3C6]"
   }
 ];
 
@@ -90,8 +96,8 @@ const Features = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 
                 <div className="flex justify-between items-start mb-4 md:mb-5 relative z-10">
-                  <div className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon strokeWidth={1.5} size={22} className="md:w-6 md:h-6" />
+                  <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-[#111118] border border-white/10 flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:border-[#6A00FF]/40 group-hover:bg-[#15151f] transition-colors transition-shadow duration-300">
+                    <Icon strokeWidth={1.7} size={20} className={`md:w-5 md:h-5 ${feature.iconColor}`} />
                   </div>
                   <span className="px-2.5 py-1 rounded-full bg-[#0B0B0F] border border-white/10 text-[10px] uppercase tracking-wider font-bold text-gray-400 group-hover:text-white group-hover:border-white/20 transition-colors">
                     {feature.tag}

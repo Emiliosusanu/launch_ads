@@ -14,6 +14,8 @@ const TEMPLATES = [
     id: 'tpl-1',
     name: 'High ACOS Bid Reducer',
     trigger: 'daily',
+    intervalDays: 1,
+    timeOfDay: '08:00',
     enabled: true,
     conditions: [
       { id: 'c1', metric: 'acos', operator: 'gt', value: 30 },
@@ -26,7 +28,9 @@ const TEMPLATES = [
   {
     id: 'tpl-2',
     name: 'Bleeder Stopper',
-    trigger: 'hourly',
+    trigger: 'daily',
+    intervalDays: 1,
+    timeOfDay: '12:00',
     enabled: true,
     conditions: [
       { id: 'c1', metric: 'spend', operator: 'gt', value: 20 },
@@ -39,7 +43,9 @@ const TEMPLATES = [
   {
     id: 'tpl-3',
     name: 'Winner Scaler',
-    trigger: 'weekly',
+    trigger: 'daily',
+    intervalDays: 1,
+    timeOfDay: '20:00',
     enabled: false,
     conditions: [
       { id: 'c1', metric: 'acos', operator: 'lt', value: 15 },
@@ -109,6 +115,8 @@ const RuleBuilder = () => {
       name: 'New Automation Rule',
       enabled: false,
       trigger: 'daily',
+      intervalDays: 1,
+      timeOfDay: '09:00',
       conditions: [{ id: Math.random().toString(), metric: 'acos', operator: 'gt', value: 30 }],
       actions: [{ id: Math.random().toString(), type: 'decrease_bid', value: 5, unit: '%' }]
     };
@@ -189,8 +197,11 @@ const RuleBuilder = () => {
                     <h4 className={`font-bold text-sm mb-1 ${activeRuleId === rule.id ? 'text-white' : 'text-gray-300'}`}>
                       {rule.name}
                     </h4>
-                    <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-                      <Clock size={10} /> {rule.trigger}
+                    <div className="flex items-center gap-1.5 text-[10px] font-semibold text-gray-500 uppercase tracking-[0.18em]">
+                      <Clock size={10} className="text-gray-600" />
+                      <span className="text-[9px] text-gray-600 normal-case tracking-normal">
+                        Every {(rule.intervalDays || 1)} day{(rule.intervalDays || 1) > 1 ? 's' : ''} at {(rule.timeOfDay || '08:00')}
+                      </span>
                     </div>
                   </div>
                   
@@ -215,12 +226,27 @@ const RuleBuilder = () => {
                     <button onClick={() => setActiveRuleId(null)} className="lg:hidden mr-2 text-gray-500">
                        <ArrowDown className="rotate-90" size={20} />
                     </button>
-                    <input 
-                      type="text" 
-                      value={activeRule.name}
-                      onChange={(e) => updateActiveRule({ name: e.target.value })}
-                      className="bg-transparent border-none text-base md:text-xl font-bold text-white focus:outline-none focus:ring-0 p-0 w-full placeholder:text-gray-600"
-                    />
+                    <div className="flex flex-col gap-1 w-full">
+                      <input 
+                        type="text" 
+                        value={activeRule.name}
+                        onChange={(e) => updateActiveRule({ name: e.target.value })}
+                        className="bg-transparent border-none text-base md:text-xl font-bold text-white focus:outline-none focus:ring-0 p-0 w-full placeholder:text-gray-600"
+                      />
+                      <div className="inline-flex items-center gap-1.5 rounded-full bg-[#0B0B0F]/80 border border-white/10 px-2.5 py-0.5 w-max">
+                        <Clock size={11} className="text-gray-500" />
+                        <span className="text-[10px] font-semibold text-gray-400 tracking-[0.18em] uppercase">DAILY</span>
+                        <div className="flex items-center gap-1 text-[10px] text-gray-400 ml-1">
+                          <span className="uppercase tracking-[0.16em] text-gray-500">AT</span>
+                          <input
+                            type="time"
+                            value={activeRule.timeOfDay || '08:00'}
+                            onChange={(e) => updateActiveRule({ timeOfDay: e.target.value })}
+                            className="bg-[#111118] border border-white/10 rounded px-1 py-0.5 text-[10px] text-gray-100 text-center focus:outline-none focus:border-[#6A00FF]"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex gap-2 md:gap-3 shrink-0 ml-2">
                     <Button 

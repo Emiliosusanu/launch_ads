@@ -7,7 +7,8 @@ import DashboardMockup from '@/components/DashboardMockup';
 
 const Hero = () => {
   const { toast } = useToast();
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLElement | null>(null);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start end', 'end start'],
@@ -37,28 +38,28 @@ const Hero = () => {
       style={{ y: heroParallaxY }}
       className="relative pt-24 md:pt-40 pb-12 md:pb-32 px-4 md:px-6 overflow-hidden bg-[#0B0B0F] min-h-screen flex items-start md:items-center"
     >
-      {/* Vertical + radial glow perfectly centered */}
-      <div className="absolute inset-0 flex justify-center pointer-events-none z-0">
-        <motion.div
-          style={{ opacity: glowOpacity }}
-          className="w-px h-[120%] bg-gradient-to-b from-[#6A00FF]/0 via-[#6A00FF]/40 to-[#6A00FF]/0"
-        />
-      </div>
-      <div className="absolute inset-0 flex justify-center pointer-events-none z-0">
-        <motion.div
-          style={{ opacity: glowOpacity }}
-          className="w-[600px] md:w-[1000px] h-[600px] md:h-[1000px] bg-[#6A00FF]/5 rounded-full blur-[120px]"
-        />
-      </div>
-
       <div className="container mx-auto max-w-7xl relative z-10">
         <div className="grid lg:grid-cols-1 gap-8 md:gap-16 items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-5xl mx-auto px-2"
+            className="relative max-w-7xl mx-auto px-2"
           >
+            {/* Centered vertical line + radial glow bound to same width as header */}
+            <div className="pointer-events-none absolute inset-y-[-260px] left-1/2 -translate-x-1/2 flex justify-center -z-10">
+              <motion.div
+                style={{ opacity: glowOpacity }}
+                className="w-px h-full bg-gradient-to-b from-[#6A00FF]/0 via-[#6A00FF]/40 to-[#6A00FF]/0"
+              />
+            </div>
+            <div className="pointer-events-none absolute -top-[260px] left-1/2 -translate-x-1/2 -z-10">
+              <motion.div
+                style={{ opacity: glowOpacity }}
+                className="w-[520px] h-[520px] md:w-[900px] md:h-[900px] bg-[#6A00FF]/5 rounded-full blur-[120px]"
+              />
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
@@ -71,8 +72,7 @@ const Hero = () => {
             >
               <span className="relative inline-flex rounded-full h-2 w-2 md:h-2.5 md:w-2.5 bg-[#FF4F2C]" />
               <span className="tracking-wide">
-                v2.0 PUBLIC BETA:{' '}
-                <span className="text-white">84 SPOTS LEFT</span>
+                v2.0 PUBLIC BETA: <span className="text-white">84 SPOTS LEFT</span>
               </span>
               <ChevronRight className="w-3 h-3 md:w-3.5 md:h-3.5 text-gray-400" />
             </motion.div>
@@ -80,21 +80,18 @@ const Hero = () => {
             <h1 className="text-[2.6rem] sm:text-[3.4rem] md:text-[4.8rem] font-extrabold tracking-tight text-white mb-5 md:mb-10 text-balance leading-[1.05]">
               Fix your Amazon Ads.
               <br />
-              <span className="text-gradient pb-2 inline-block">
-                Automatically.
-              </span>
+              <span className="text-gradient pb-2 inline-block">Automatically.</span>
             </h1>
 
             <p className="text-[0.98rem] md:text-2xl text-[#F3F3F4]/80 mb-3 md:mb-4 max-w-3xl mx-auto font-normal leading-relaxed text-balance antialiased">
-              Built for serious Amazon KDP authors. AdsAutoPilot watches your
-              campaigns 24/7 to cut wasted spend, lower ACOS and grow royalties
-              while you sleep.
+              Built for serious Amazon KDP authors. AdsAutoPilot watches your campaigns
+              24/7 to cut wasted spend, lower ACOS and grow royalties while you sleep.
             </p>
 
             <p className="hidden md:block text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-3xl mx-auto font-normal leading-relaxed text-balance">
-              Stop guessing what to fix in your Amazon Ads. AdsAutoPilot helps
-              you understand what’s happening, stay in control, and manage your
-              campaigns with confidence, without the stress and overwhelm.
+              Stop guessing what to fix in your Amazon Ads. AdsAutoPilot helps you
+              understand what’s happening, stay in control, and manage your campaigns
+              with confidence, without the stress and overwhelm.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-6 w-full sm:w-auto">
@@ -108,8 +105,8 @@ const Hero = () => {
             </div>
 
             <p className="text-[11px] md:text-sm text-gray-400 mb-8 md:mb-16 max-w-md mx-auto">
-              No credit card required. Cancel anytime. Ideal for authors
-              spending at least $300/month on Amazon ads.
+              No credit card required. Cancel anytime. Ideal for authors spending at least
+              $300/month on Amazon ads.
             </p>
 
             <div className="flex items-center justify-center gap-x-3 md:gap-x-10 gap-y-3 text-xs md:text-sm font-medium text-gray-400 flex-wrap max-w-3xl mx-auto">
@@ -144,8 +141,7 @@ const Hero = () => {
           className="relative mt-12 md:mt-24 mx-auto max-w-7xl px-0 sm:px-4 flex justify-center"
         >
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] h-[95%] bg-[#6A00FF]/20 blur-[80px] md:blur-[120px] -z-10" />
-
-          <div className="w-full max-w-5xl rounded-xl md:rounded-2xl overflow-hidden shadow-2xl">
+          <div className="w-full max-w-7xl rounded-xl md:rounded-2xl overflow-hidden shadow-2xl">
             <DashboardMockup />
           </div>
         </motion.div>
