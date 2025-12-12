@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import PainPoints from '@/components/PainPoints';
@@ -32,6 +32,25 @@ import Careers from '@/pages/Careers';
 import Legal from '@/pages/Legal';
 import Contact from '@/pages/Contact';
 import { AuthProvider } from '@/contexts/SupabaseAuthContext';
+
+// SPA Meta Pixel PageView tracker
+function MetaPixelPageView() {
+  const location = useLocation();
+  const first = useRef(true);
+
+  useEffect(() => {
+    if (first.current) {
+      // Skip initial render since the Pixel script in <head> already sent PageView
+      first.current = false;
+      return;
+    }
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'PageView');
+    }
+  }, [location.pathname, location.search]);
+
+  return null;
+}
 
 const MidBetaNudge = () => (
   <section className="px-4 md:px-6 py-10 md:py-14 bg-[#0B0B0F]">
@@ -90,6 +109,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        <MetaPixelPageView />
         <Helmet>
           <title>AdsAutoPilot - Intelligent Automation for KDP</title>
           <meta name="description" content="The intelligent way to automate your Amazon Ads. Lower ACOS, save time, and scale your book sales with precision." />

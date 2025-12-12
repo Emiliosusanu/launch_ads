@@ -17,6 +17,10 @@ const FinalCTA = () => {
     setIsLoading(true);
     try {
       await marketingService.subscribe(email);
+      // Meta Pixel: track successful lead (no PII sent here)
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('track', 'Lead');
+      }
       toast({
         title: "Spot Secured! 🚀",
         description: "You can log in right away to complete your beta access. No email confirmation needed.",
