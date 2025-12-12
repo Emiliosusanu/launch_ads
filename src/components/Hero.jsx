@@ -78,24 +78,24 @@ const Hero = () => {
             </motion.div>
 
             <h1 className="text-[2.6rem] sm:text-[3.4rem] md:text-[4.8rem] font-extrabold tracking-tight text-white mb-5 md:mb-10 text-balance leading-[1.05]">
-              Cut wasted Amazon Ads spend for KDP authors,
+              Cut wasted Amazon Ads spend for KDP authors
               <br />
-              <span className="text-gradient pb-2 inline-block">automatically, 24/7.</span>
+              <span className="text-gradient pb-2 inline-block">— automatically, 24/7.</span>
             </h1>
 
             <p className="text-sm md:text-base text-[#F3F3F4]/80 mb-3 md:mb-4 max-w-3xl mx-auto font-medium leading-relaxed text-balance">
-              Every day your ads run unchecked, money leaks out of your royalties.
+              Every day your ads run unchecked, money leaks from your royalties.
             </p>
 
             <p className="text-[0.98rem] md:text-2xl text-[#F3F3F4]/80 mb-3 md:mb-4 max-w-3xl mx-auto font-normal leading-relaxed text-balance antialiased">
               Built for serious Amazon KDP authors. AdsAutoPilot watches your campaigns
-              24/7 to cut wasted spend, lower ACOS and grow royalties while you sleep.
+              24/7 to cut wasted spend, keep ACOS under control, and grow royalties while you sleep.
             </p>
 
             <p className="hidden md:block text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-3xl mx-auto font-normal leading-relaxed text-balance">
-              Stop guessing what to fix in your Amazon Ads. AdsAutoPilot helps you
-              understand what’s happening, stay in control, and manage your campaigns
-              with confidence, without the stress and overwhelm.
+              Stop guessing what to fix in your Amazon Ads. AdsAutoPilot shows what’s
+              happening, keeps you in control, and helps you manage your campaigns
+              with confidence—without the stress or overwhelm.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-6 w-full sm:w-auto">
@@ -109,8 +109,7 @@ const Hero = () => {
             </div>
 
             <p className="text-[11px] md:text-sm text-gray-400 mb-8 md:mb-16 max-w-md mx-auto">
-              No credit card required. Cancel anytime. Ideal for authors spending at least
-              $300/month on Amazon ads.
+              No credit card. Cancel anytime. Best for authors spending $300+/month on Amazon Ads.
             </p>
 
             <div className="flex items-center justify-center gap-x-3 md:gap-x-10 gap-y-3 text-xs md:text-sm font-medium text-gray-400 flex-wrap max-w-3xl mx-auto">
