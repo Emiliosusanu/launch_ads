@@ -42,7 +42,7 @@ const Product = () => {
               }}
               className="w-full sm:w-auto bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white font-bold px-6 py-2.5 rounded-xl text-sm md:text-base"
             >
-              Start Free Trial &rarr;
+              Start controlling my ads &rarr;
             </Button>
             <p className="text-xs md:text-sm text-gray-400 max-w-md">
               No credit card. Cancel anytime. Designed for authors managing ongoing ads.

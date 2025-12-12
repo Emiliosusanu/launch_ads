@@ -60,6 +60,11 @@ const PainPoints = () => {
               Manual ad management is a full-time job that pays nothing. 
               Most authors are working harder only to earn less.
             </p>
+            <div className="mt-4 space-y-1 text-sm md:text-base text-gray-300">
+              <p>You start the day checking ACOS.</p>
+              <p>You promise yourself you’ll fix it later.</p>
+              <p>By the end of the week, profits are gone and stress is up.</p>
+            </div>
           </motion.div>
         </div>
 

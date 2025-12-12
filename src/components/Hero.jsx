@@ -7,7 +7,7 @@ import DashboardMockup from '@/components/DashboardMockup';
 
 const Hero = () => {
   const { toast } = useToast();
-  const heroRef = useRef<HTMLElement | null>(null);
+  const heroRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -78,10 +78,14 @@ const Hero = () => {
             </motion.div>
 
             <h1 className="text-[2.6rem] sm:text-[3.4rem] md:text-[4.8rem] font-extrabold tracking-tight text-white mb-5 md:mb-10 text-balance leading-[1.05]">
-              Fix your Amazon Ads.
+              Cut wasted Amazon Ads spend for KDP authors,
               <br />
-              <span className="text-gradient pb-2 inline-block">Automatically.</span>
+              <span className="text-gradient pb-2 inline-block">automatically, 24/7.</span>
             </h1>
+
+            <p className="text-sm md:text-base text-[#F3F3F4]/80 mb-3 md:mb-4 max-w-3xl mx-auto font-medium leading-relaxed text-balance">
+              Every day your ads run unchecked, money leaks out of your royalties.
+            </p>
 
             <p className="text-[0.98rem] md:text-2xl text-[#F3F3F4]/80 mb-3 md:mb-4 max-w-3xl mx-auto font-normal leading-relaxed text-balance antialiased">
               Built for serious Amazon KDP authors. AdsAutoPilot watches your campaigns
@@ -99,7 +103,7 @@ const Hero = () => {
                 onClick={handleBetaClick}
                 className="w-full sm:w-auto min-w-[220px] h-12 md:h-16 rounded-xl md:rounded-2xl bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white font-bold text-base md:text-lg transition-all duration-300 shadow-[0_0_40px_rgba(255,122,61,0.3)] border border-[#FF4F2C]/50 hover:scale-[1.02] active:scale-[0.98] group"
               >
-                Start Free Trial
+                Start controlling my ads
                 <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>

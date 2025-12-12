@@ -50,6 +50,9 @@ const Pricing = () => {
   return (
     <section id="pricing" className="py-24 md:py-32 px-6 bg-[#0B0B0F] relative">
       <div className="container mx-auto max-w-6xl">
+        <p className="text-base md:text-lg text-gray-300 text-center mb-6">
+          Imagine opening your dashboard and already knowing everything is under control.
+        </p>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -130,7 +133,7 @@ const Pricing = () => {
                     : 'bg-[#0B0B0F] border border-white/10 text-white hover:bg-white/10 hover:border-white/20'
                 }`}
               >
-                {plan.highlight ? 'Start Free Trial' : `Choose ${plan.name}`}
+                {plan.highlight ? 'Start controlling my ads' : `Choose ${plan.name}`}
               </Button>
               
               <div className="mt-4 text-center">

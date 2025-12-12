@@ -7,7 +7,7 @@ const features = [
   {
     icon: LineChart,
     title: "AI Bid Optimization",
-    description: "Our algorithms analyze historical data to adjust bids in real-time, ensuring you hit your target ACOS perfectly.",
+    description: "Your bids adjust themselves before wasted clicks can drain your royalties, keeping your ACOS under control without daily micromanagement. AI analyzes performance and makes precise changes for you.",
     gradient: "from-[#6A00FF] to-[#C149FF]",
     tag: "Core Tech",
     iconColor: "text-[#C49BFF]"
@@ -15,7 +15,7 @@ const features = [
   {
     icon: ShieldCheck,
     title: "Negative Keyword Shield",
-    description: "Automatically detects and blocks search terms that are wasting budget without generating sales. No more leaks.",
+    description: "You stop paying for useless clicks that never turn into sales, protecting your royalties automatically.",
     gradient: "from-[#FF4F2C] to-[#FF7A3D]",
     tag: "Money Saver",
     iconColor: "text-[#FF9980]"
@@ -23,7 +23,7 @@ const features = [
   {
     icon: Clock,
     title: "24/7 Vigilance",
-    description: "The system never sleeps. It monitors your campaigns continuously, reacting to market changes instantly.",
+    description: "You catch problems before they burn your budget—automation watches campaigns around the clock and reacts to changes instantly.",
     gradient: "from-[#4DA6FF] to-[#2ECC71]",
     tag: "Always On",
     iconColor: "text-[#7FD1FF]"
@@ -31,7 +31,7 @@ const features = [
   {
     icon: SlidersHorizontal,
     title: "Smart Rule Engine",
-    description: "Create 'If This Then That' automation rules tailored to your specific strategy. Infinite flexibility.",
+    description: "You control exactly how automation behaves with simple 'If This Then That' rules—strategy that fits you.",
     gradient: "from-[#C149FF] to-[#FF4F2C]",
     tag: "Customizable",
     iconColor: "text-[#FFB3E6]"
@@ -39,7 +39,7 @@ const features = [
   {
     icon: Search,
     title: "Keyword Harvester",
-    description: "Automatically finds new profitable keywords from auto campaigns and promotes them to manual campaigns.",
+    description: "You scale winners faster—profitable terms are promoted from auto to manual campaigns automatically.",
     gradient: "from-[#FF7A3D] to-[#FFB84D]",
     tag: "Growth",
     iconColor: "text-[#FFD27A]"
@@ -47,7 +47,7 @@ const features = [
   {
     icon: LayoutDashboard,
     title: "Crystal Clear Dashboard",
-    description: "See your true profit, royalties, and ad spend in one unified view across all marketplaces.",
+    description: "You see profit, royalties, and ad spend in one place, so decisions are obvious across all marketplaces.",
     gradient: "from-[#2ECC71] to-[#4DA6FF]",
     tag: "Analytics",
     iconColor: "text-[#8FE3C6]"
