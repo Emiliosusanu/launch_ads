@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { ChevronRight, ArrowRight, ShieldCheck, Star } from 'lucide-react';
+import { ChevronRight, ArrowRight, ShieldCheck, Star, CheckCircle2 } from 'lucide-react';
 import DashboardMockup from '@/components/DashboardMockup';
 
 const Hero = () => {
@@ -83,19 +83,27 @@ const Hero = () => {
               <span className="text-gradient pb-2 inline-block">— automatically, 24/7.</span>
             </h1>
 
-            <p className="text-sm md:text-base text-[#F3F3F4]/80 mb-3 md:mb-4 max-w-3xl mx-auto font-medium leading-relaxed text-balance">
-              Every day your ads run unchecked, money leaks from your royalties.
+            <p className="text-sm md:text-base text-[#F3F3F4]/80 mb-3 md:mb-4 max-w-2xl mx-auto font-medium leading-relaxed text-balance">
+              Unchecked ads leak royalties daily.
             </p>
 
-            <p className="text-[0.98rem] md:text-2xl text-[#F3F3F4]/80 mb-3 md:mb-4 max-w-3xl mx-auto font-normal leading-relaxed text-balance antialiased">
-              Built for serious Amazon KDP authors. AdsAutoPilot watches your campaigns
-              24/7 to cut wasted spend, keep ACOS under control, and grow royalties while you sleep.
-            </p>
+            <div className="mb-3 md:mb-4 max-w-2xl mx-auto flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white text-xs md:text-sm">
+                <CheckCircle2 className="w-4 h-4 text-[#2ECC71]" />
+                <span>Cut wasted spend</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white text-xs md:text-sm">
+                <CheckCircle2 className="w-4 h-4 text-[#FFB84D]" />
+                <span>Keep ACOS under control</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white text-xs md:text-sm">
+                <CheckCircle2 className="w-4 h-4 text-[#C149FF]" />
+                <span>Grow royalties while you sleep</span>
+              </div>
+            </div>
 
-            <p className="hidden md:block text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-3xl mx-auto font-normal leading-relaxed text-balance">
-              Stop guessing what to fix in your Amazon Ads. AdsAutoPilot shows what’s
-              happening, keeps you in control, and helps you manage your campaigns
-              with confidence—without the stress or overwhelm.
+            <p className="hidden md:block text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto font-normal leading-relaxed text-balance">
+              See what’s happening. Stay in control. No overwhelm.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-6 mb-3 md:mb-6 w-full sm:w-auto">
