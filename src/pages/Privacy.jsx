@@ -12,7 +12,7 @@ const Privacy = () => {
 
         <div className="space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
           <p>
-            AdsAutoPilot ("we", "our", or "us") provides tools to help Amazon KDP authors monitor and optimize their advertising campaigns. This policy explains how we handle data when you use our website and dashboard.
+            DropScaleAds ("we", "our", or "us") provides tools to help Amazon KDP authors monitor and optimize their advertising campaigns. This policy explains how we handle data when you use our website and dashboard.
           </p>
 
           <h2 className="text-xl font-semibold text-white mt-4">1. Data we collect</h2>
@@ -28,7 +28,7 @@ const Privacy = () => {
           <h2 className="text-xl font-semibold text-white mt-4">2. How we use data</h2>
           <p>We use your data to:</p>
           <ul className="list-disc list-inside space-y-1">
-            <li>Provide and maintain the AdsAutoPilot service.</li>
+            <li>Provide and maintain the DropScaleAds service.</li>
             <li>Show you reporting, insights, and automation suggestions.</li>
             <li>Improve the product based on aggregated, anonymised usage patterns.</li>
             <li>Communicate important product updates, security notices, and billing‑related information.</li>
@@ -55,7 +55,7 @@ const Privacy = () => {
           <h2 className="text-xl font-semibold text-white mt-4">6. Contact</h2>
           <p>
             For any privacy questions or requests, contact us at
-            <span className="font-medium"> support@adsautopilot.com</span>.
+            <span className="font-medium"> support@dropscaleads.com</span>.
           </p>
 
           <div className="mt-10">

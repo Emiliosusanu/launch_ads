@@ -12,12 +12,12 @@ const Terms = () => {
 
         <div className="space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
           <p>
-            These Terms of Use ("Terms") govern your access to and use of AdsAutoPilot, our platform that helps Amazon KDP authors monitor and optimize advertising campaigns.
+            These Terms of Use ("Terms") govern your access to and use of DropScaleAds, our platform that helps Amazon KDP authors monitor and optimize advertising campaigns.
           </p>
 
           <h2 className="text-xl font-semibold text-white mt-4">1. Beta service</h2>
           <p>
-            AdsAutoPilot is currently offered as a beta product. Features may change, be added, or be removed at any time. The service is provided on an "as is" and "as available" basis.
+            DropScaleAds is currently offered as a beta product. Features may change, be added, or be removed at any time. The service is provided on an "as is" and "as available" basis.
           </p>
 
           <h2 className="text-xl font-semibold text-white mt-4">2. Acceptable use</h2>
@@ -30,12 +30,12 @@ const Terms = () => {
 
           <h2 className="text-xl font-semibold text-white mt-4">3. No guarantees</h2>
           <p>
-            While AdsAutoPilot is designed to help optimise advertising, we do not guarantee specific results, sales, or performance. You remain responsible for your advertising decisions and compliance with Amazon’s policies.
+            While DropScaleAds is designed to help optimise advertising, we do not guarantee specific results, sales, or performance. You remain responsible for your advertising decisions and compliance with Amazon’s policies.
           </p>
 
           <h2 className="text-xl font-semibold text-white mt-4">4. Limitation of liability</h2>
           <p>
-            To the maximum extent permitted by law, AdsAutoPilot will not be liable for any indirect, incidental, or consequential damages, or any loss of profits or revenue arising from your use of the service.
+            To the maximum extent permitted by law, DropScaleAds will not be liable for any indirect, incidental, or consequential damages, or any loss of profits or revenue arising from your use of the service.
           </p>
 
           <h2 className="text-xl font-semibold text-white mt-4">5. Termination</h2>
@@ -51,7 +51,7 @@ const Terms = () => {
           <h2 className="text-xl font-semibold text-white mt-4">7. Contact</h2>
           <p>
             If you have questions about these Terms, contact us at
-            <span className="font-medium"> support@adsautopilot.com</span>.
+            <span className="font-medium"> support@dropscaleads.com</span>.
           </p>
 
           <div className="mt-10">

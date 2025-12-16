@@ -7,7 +7,7 @@ const RoadmapPage = () => {
       <div className="max-w-4xl mx-auto space-y-10">
         <header className="space-y-3">
           <p className="text-xs uppercase tracking-[0.2em] text-[#FF7A3D] font-semibold">Product roadmap</p>
-          <h1 className="text-3xl md:text-4xl font-bold">Where AdsAutoPilot is headed</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">Where DropScaleAds is headed</h1>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl">
             We ship in small, steady iterations. This roadmap is intentionally high‑level and focuses on value to authors, not internal technical tasks.
           </p>

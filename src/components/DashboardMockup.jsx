@@ -163,7 +163,7 @@ const DashboardMockup = () => {
         <div className="flex-1 h-8 md:h-10 bg-[#0B0B0F] rounded-lg border border-white/5 flex items-center px-3 md:px-4 gap-2 max-w-xl mx-auto opacity-50 transition-opacity hover:opacity-80 group cursor-text">
           <Lock className="w-3 h-3 md:w-3.5 md:h-3.5 text-[#2ECC71]" />
           <span className="text-[10px] md:text-[13px] text-gray-400 font-mono truncate group-hover:text-white transition-colors">
-            app.adsautopilot.com/dashboard
+            app.dropscaleads.com/dashboard
           </span>
         </div>
       </div>

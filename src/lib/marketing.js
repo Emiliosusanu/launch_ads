@@ -24,7 +24,7 @@ export const marketingService = {
 
     if (existingUsers) {
       // User exists
-      throw new Error("You\'re already on the AdsAutoPilot beta list with this email. Try logging in or use another address.");
+      throw new Error("You\'re already on the DropScaleAds beta list with this email. Try logging in or use another address.");
     }
 
     // 3. Store in Supabase Database
@@ -52,7 +52,7 @@ export const marketingService = {
     // Email 1: Welcome (Immediate)
     setTimeout(() => {
       marketingService.sendMockEmail({
-        subject: "Welcome to AdsAutoPilot Beta",
+        subject: "Welcome to DropScaleAds Beta",
         preview: "Your spot is reserved. You can log in any time to complete access.",
       });
     }, 1500);

@@ -16,7 +16,7 @@ const entries = [
     date: '2025-11-25',
     title: 'Initial public beta landing page',
     items: [
-      'Launched the new AdsAutoPilot marketing site.',
+      'Launched the new DropScaleAds marketing site.',
       'Added demo dashboard, pricing section, testimonials, and roadmap preview.',
     ],
   },
@@ -28,7 +28,7 @@ const Changelog = () => {
       <div className="max-w-3xl mx-auto space-y-10">
         <header className="space-y-3">
           <p className="text-xs uppercase tracking-[0.2em] text-[#FF7A3D] font-semibold">Changelog</p>
-          <h1 className="text-3xl md:text-4xl font-bold">What’s new in AdsAutoPilot</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">What’s new in DropScaleAds</h1>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl">
             A brief history of visible changes to the marketing site and product during the beta.
           </p>

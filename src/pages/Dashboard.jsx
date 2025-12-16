@@ -341,7 +341,7 @@ const fetchUserDataAndMessages = async (email) => {
         console.warn("Error finding admin:", adminError);
       }
 
-      const receiverEmail = adminData?.email || "support@adsautopilot.com";
+      const receiverEmail = adminData?.email || "support@dropscaleads.com";
       const conversationId = [userData.email, receiverEmail]
         .sort()
         .join("_");
@@ -430,14 +430,14 @@ const fetchUserDataAndMessages = async (email) => {
               </div>
               <p className="text-gray-300 max-w-xl mb-3 text-sm md:text-base">
                 Your beta access has been granted. You now have full access to
-                the AdsAutoPilot automation engine.
+                the DropScaleAds automation engine.
               </p>
               <div className="mb-5 md:mb-6 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-3 md:px-4 py-3 text-xs md:text-sm text-yellow-200">
                 <p className="font-semibold uppercase tracking-wide mb-1">
                   Beta disclaimer
                 </p>
                 <p>
-                  AdsAutoPilot is currently in beta. By continuing to use this
+                  DropScaleAds is currently in beta. By continuing to use this
                   app you acknowledge and accept that there may be bugs, errors,
                   downtime, or non-functional features, and you agree to use it
                   at your own risk during this testing phase.
@@ -450,7 +450,7 @@ const fetchUserDataAndMessages = async (email) => {
                   rel="noopener noreferrer"
                 >
                   <Button className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-black font-bold">
-                    Access the Official Portal of AdsAutoPilot Beta{" "}
+                    Access the Official Portal of DropScaleAds Beta{" "}
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </a>

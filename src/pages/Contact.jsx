@@ -17,7 +17,7 @@ const Contact = () => {
           <h2 className="text-xl md:text-2xl font-semibold">Support & product questions</h2>
           <p>
             For help with the product or questions about your account, email us at
-            <span className="font-medium"> support@adsautopilot.com</span>.
+            <span className="font-medium"> support@dropscaleads.com</span>.
           </p>
         </section>
 
@@ -25,7 +25,7 @@ const Contact = () => {
           <h2 className="text-xl md:text-2xl font-semibold">Partnerships & collaborations</h2>
           <p>
             For podcast appearances, joint promotions, or education partnerships, contact
-            <span className="font-medium"> partners@adsautopilot.com</span>.
+            <span className="font-medium"> partners@dropscaleads.com</span>.
           </p>
         </section>
 
@@ -33,7 +33,7 @@ const Contact = () => {
           <h2 className="text-xl md:text-2xl font-semibold">Press</h2>
           <p>
             For press and media enquiries, reach out to
-            <span className="font-medium"> press@adsautopilot.com</span>.
+            <span className="font-medium"> press@dropscaleads.com</span>.
           </p>
         </section>
 

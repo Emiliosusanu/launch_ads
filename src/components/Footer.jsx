@@ -19,7 +19,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="max-w-xs">
             <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#6A00FF] to-[#FF7A3D] block mb-4">
-              AdsAutoPilot
+              DropScaleAds
             </span>
             <p className="text-sm text-gray-500 leading-relaxed">
               Intelligent automation for Amazon KDP authors. 
@@ -76,7 +76,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-600">© 2025 AdsAutoPilot LLC. All rights reserved.</p>
+          <p className="text-xs text-gray-600">© 2025 DropScaleAds LLC. All rights reserved.</p>
           <div className="flex gap-6">
             <Link to="/privacy" className="text-xs text-gray-600 hover:text-gray-400">Privacy</Link>
             <Link to="/terms" className="text-xs text-gray-600 hover:text-gray-400">Terms</Link>

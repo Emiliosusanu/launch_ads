@@ -8,9 +8,9 @@ const Product = () => {
       <div className="max-w-5xl mx-auto space-y-12">
         <header>
           <p className="text-xs uppercase tracking-[0.2em] text-[#FF7A3D] mb-3 font-semibold">Product overview</p>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">AdsAutoPilot for Amazon KDP authors</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">DropScaleAds for Amazon KDP authors</h1>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl">
-            AdsAutoPilot is an automation layer on top of Amazon Ads, built specifically for self‑publishers. It helps you keep ACOS under control, protect against wasted spend, and scale winning campaigns without living inside spreadsheets.
+            DropScaleAds is an automation layer on top of Amazon Ads, built specifically for self‑publishers. It helps you keep ACOS under control, protect against wasted spend, and scale winning campaigns without living inside spreadsheets.
           </p>
         </header>
 
@@ -30,7 +30,7 @@ const Product = () => {
             Stop guessing what to fix in your Amazon Ads. Let clarity, not chaos, guide your campaigns.
           </p>
           <p className="text-sm md:text-base text-gray-300">
-            Built for authors who are tired of spending hours inside the ads dashboard. AdsAutoPilot helps you understand what’s happening, stay in control, and manage your campaigns with confidence&nbsp;— without the stress and overwhelm.
+            Built for authors who are tired of spending hours inside the ads dashboard. DropScaleAds helps you understand what’s happening, stay in control, and manage your campaigns with confidence&nbsp;— without the stress and overwhelm.
           </p>
           <div className="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <Button
@@ -73,7 +73,7 @@ const Product = () => {
         <section className="space-y-3">
           <h2 className="text-xl md:text-2xl font-semibold">How it works at a high level</h2>
           <ol className="space-y-2 text-sm md:text-base text-gray-300 list-decimal list-inside">
-            <li>You connect your Amazon Ads account to AdsAutoPilot.</li>
+            <li>You connect your Amazon Ads account to DropScaleAds.</li>
             <li>You set your goals (target ACOS, monthly budgets, and a few guardrails).</li>
             <li>Our engine monitors performance and adjusts bids, keywords, and rules on a regular schedule.</li>
             <li>You review recommendations in the dashboard and keep full control to pause or override any rule.</li>

@@ -7,9 +7,9 @@ const FeaturesPage = () => {
       <div className="max-w-5xl mx-auto space-y-10">
         <header className="space-y-3">
           <p className="text-xs uppercase tracking-[0.2em] text-[#FF7A3D] font-semibold">Features</p>
-          <h1 className="text-3xl md:text-4xl font-bold">What AdsAutoPilot actually does for you</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">What DropScaleAds actually does for you</h1>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl">
-            Under the hood, AdsAutoPilot is a collection of automation engines focused on a single outcome: more royalties from the same or lower ad spend.
+            Under the hood, DropScaleAds is a collection of automation engines focused on a single outcome: more royalties from the same or lower ad spend.
           </p>
         </header>
 

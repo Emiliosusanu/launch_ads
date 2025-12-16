@@ -9,13 +9,13 @@ const Legal = () => {
           <p className="text-xs uppercase tracking-[0.2em] text-[#FF7A3D] font-semibold">Legal</p>
           <h1 className="text-3xl md:text-4xl font-bold">Legal information</h1>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl">
-            This page collects links to the legal documents that govern your use of AdsAutoPilot during the beta.
+            This page collects links to the legal documents that govern your use of DropScaleAds during the beta.
           </p>
         </header>
 
         <section className="space-y-3 text-sm md:text-base text-gray-300">
           <p>
-            By using AdsAutoPilot you agree to the following documents:
+            By using DropScaleAds you agree to the following documents:
           </p>
           <ul className="space-y-2 list-disc list-inside">
             <li>
@@ -31,7 +31,7 @@ const Legal = () => {
           <h2 className="text-xl md:text-2xl font-semibold">Contact for legal questions</h2>
           <p>
             For anything related to legal terms, data processing, or compliance, please contact us at
-            <span className="font-medium"> legal@adsautopilot.com</span>.
+            <span className="font-medium"> legal@dropscaleads.com</span>.
           </p>
         </section>
 

@@ -7,9 +7,9 @@ const About = () => {
       <div className="max-w-4xl mx-auto space-y-10">
         <header className="space-y-3">
           <p className="text-xs uppercase tracking-[0.2em] text-[#FF7A3D] font-semibold">Company</p>
-          <h1 className="text-3xl md:text-4xl font-bold">About AdsAutoPilot</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">About DropScaleAds</h1>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl">
-            AdsAutoPilot was created for authors who are tired of guessing their way through Amazon Ads. Our goal is simple: help serious KDP publishers protect their royalties and scale winning campaigns without turning into full‑time media buyers.
+            DropScaleAds was created for authors who are tired of guessing their way through Amazon Ads. Our goal is simple: help serious KDP publishers protect their royalties and scale winning campaigns without turning into full‑time media buyers.
           </p>
         </header>
 
@@ -32,7 +32,7 @@ const About = () => {
         <section className="space-y-3">
           <h2 className="text-xl md:text-2xl font-semibold">Where we are now</h2>
           <p className="text-sm md:text-base text-gray-300">
-            At this stage we’re intentionally small and focused. The public beta lets us prove that AdsAutoPilot can reliably lower ACOS and save time before we open the doors wider.
+            At this stage we’re intentionally small and focused. The public beta lets us prove that DropScaleAds can reliably lower ACOS and save time before we open the doors wider.
           </p>
         </section>
 

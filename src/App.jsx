@@ -33,14 +33,12 @@ import Legal from '@/pages/Legal';
 import Contact from '@/pages/Contact';
 import { AuthProvider } from '@/contexts/SupabaseAuthContext';
 
-// SPA Meta Pixel PageView tracker
 function MetaPixelPageView() {
   const location = useLocation();
   const first = useRef(true);
 
   useEffect(() => {
     if (first.current) {
-      // Skip initial render since the Pixel script in <head> already sent PageView
       first.current = false;
       return;
     }
@@ -61,7 +59,7 @@ const MidBetaNudge = () => (
           So far, does this look like the help your ads needed?
         </h3>
         <p className="text-sm md:text-base text-gray-300 max-w-xl mx-auto md:mx-0">
-          If youre curious to see AdsAutoPilot in your own numbers, reserve a beta spot now and finish reading the page while we hold your place.
+          If youre curious to see DropScaleAds in your own numbers, reserve a beta spot now and finish reading the page while we hold your place.
         </p>
       </div>
       <div className="flex flex-col items-center gap-2 w-full md:w-auto">
@@ -111,7 +109,7 @@ function App() {
       <AuthProvider>
         <MetaPixelPageView />
         <Helmet>
-          <title>AdsAutoPilot - Intelligent Automation for KDP</title>
+          <title>DropScaleAds - Intelligent Automation for KDP</title>
           <meta name="description" content="The intelligent way to automate your Amazon Ads. Lower ACOS, save time, and scale your book sales with precision." />
         </Helmet>
         <div className="min-h-screen bg-[#0B0B0F] text-[#F3F3F4] overflow-x-hidden font-sans">

@@ -7,7 +7,7 @@ const Careers = () => {
       <div className="max-w-4xl mx-auto space-y-10">
         <header className="space-y-3">
           <p className="text-xs uppercase tracking-[0.2em] text-[#FF7A3D] font-semibold">Careers</p>
-          <h1 className="text-3xl md:text-4xl font-bold">Work with AdsAutoPilot</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">Work with DropScaleAds</h1>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl">
             We’re a small, product‑focused team. There are no open roles listed yet, but we’re always happy to connect with people who deeply understand publishing and performance marketing.
           </p>
@@ -33,7 +33,7 @@ const Careers = () => {
           <h2 className="text-xl md:text-2xl font-semibold">How to reach out</h2>
           <p className="text-sm md:text-base text-gray-300">
             Send a short introduction and a link to something you’ve shipped (a book, a project, a product) to
-            <span className="font-medium"> jobs@adsautopilot.com</span>. We read every message, even if we can’t reply to all of them.
+            <span className="font-medium"> jobs@dropscaleads.com</span>. We read every message, even if we can’t reply to all of them.
           </p>
         </section>
 

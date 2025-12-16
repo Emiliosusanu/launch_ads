@@ -41,7 +41,7 @@ const Documentation = () => {
                 >
                     <div className="mb-12 text-center">
                         <h1 className="text-4xl md:text-6xl font-bold mb-4">Documentation</h1>
-                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">Everything you need to know about how AdsAutoPilot works and how your automation flow is structured.</p>
+                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">Everything you need to know about how DropScaleAds works and how your automation flow is structured.</p>
                     </div>
 
                     <div className="bg-[#16161a] border border-white/5 rounded-2xl p-8 md:p-12 shadow-2xl space-y-12">
@@ -337,7 +337,7 @@ const Documentation = () => {
                         </DocSection>
 
                         <DocSection title="Security &amp; Privacy" icon={Shield}>
-                            <p>We take your data seriously. AdsAutoPilot uses the official Amazon Advertising API and never stores your Amazon login credentials.</p>
+                            <p>We take your data seriously. DropScaleAds uses the official Amazon Advertising API and never stores your Amazon login credentials.</p>
                             <p>Your data is encrypted at rest and in transit using modern encryption standards.</p>
                         </DocSection>
                     </div>
