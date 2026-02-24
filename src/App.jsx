@@ -59,7 +59,7 @@ const MidBetaNudge = () => (
           So far, does this look like the help your ads needed?
         </h3>
         <p className="text-sm md:text-base text-gray-300 max-w-xl mx-auto md:mx-0">
-          If youre curious to see DropScaleAds in your own numbers, reserve a beta spot now and finish reading the page while we hold your place.
+          If you’re curious to see Inteliads in your own numbers, reserve a beta spot now and finish reading the page while we hold your place.
         </p>
       </div>
       <div className="flex flex-col items-center gap-2 w-full md:w-auto">
@@ -109,7 +109,7 @@ function App() {
       <AuthProvider>
         <MetaPixelPageView />
         <Helmet>
-          <title>DropScaleAds - Intelligent Automation for KDP</title>
+          <title>Inteliads - Intelligent Automation for KDP</title>
           <meta name="description" content="The intelligent way to automate your Amazon Ads. Lower ACOS, save time, and scale your book sales with precision." />
         </Helmet>
         <div className="min-h-screen bg-[#0B0B0F] text-[#F3F3F4] overflow-x-hidden font-sans">

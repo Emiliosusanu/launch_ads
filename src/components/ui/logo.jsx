@@ -34,7 +34,7 @@ const Logo = ({ className }) => {
         />
       </svg>
       <span className="font-bold text-lg tracking-tight text-white">
-        DropScaleAds
+        Inteliads
       </span>
     </div>
   );
