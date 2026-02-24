@@ -24,7 +24,7 @@ const FinalCTA = () => {
       }
       toast({
         title: "Spot Secured! 🚀",
-        description: "You can log in right away to complete your beta access. No email confirmation needed.",
+        description: "Check your email for confirmation. You can also log in any time with this address.",
         className: "bg-[#1F1F25] border-[#2ECC71] text-white"
       });
       setEmail('');

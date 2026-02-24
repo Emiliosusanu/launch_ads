@@ -56,6 +56,28 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const chatScrollRef = useRef(null);
+
+  const sendEmail = async (payload) => {
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(text || 'Email send failed');
+      }
+
+      return await res.json().catch(() => ({ ok: true }));
+    } catch (e) {
+      console.warn('Email send failed:', e);
+      return { ok: false };
+    }
+  };
   
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState([]);
@@ -525,11 +547,12 @@ const handleSendMessage = async () => {
     setSending(true);
       
     try {
+        const messageText = chatInput;
         const conversationId = [currentUser.email, selectedUserForChat.email].sort().join('_');
         const { data, error } = await supabase.from('messages').insert([{
             sender_email: currentUser.email,
             receiver_email: selectedUserForChat.email,
-            message_text: chatInput,
+            message_text: messageText,
             conversation_id: conversationId
         }]).select();
 
@@ -556,6 +579,15 @@ const handleSendMessage = async () => {
         if (currentUser?.email) {
           await supabase.from('ADSPILOT_name').update({ last_message_date: nowIso }).eq('email', currentUser.email);
         }
+
+        // Notify user by email about admin/support reply (best-effort)
+        if (selectedUserForChat?.email) {
+          sendEmail({
+            type: 'admin_chat_message',
+            to: selectedUserForChat.email,
+            data: { message: messageText },
+          });
+        }
         
       } catch (error) {
         toast({ variant: 'destructive', title: 'Failed to send', description: error.message });
@@ -569,6 +601,15 @@ const handleSendMessage = async () => {
     try {
         const { error } = await supabase.from('ADSPILOT_name').update({ approval_status: newStatus }).eq('id', userId);
         if (error) throw error;
+
+        // Email user about status update (best-effort)
+        if (userEmail && (newStatus === 'approved' || newStatus === 'rejected')) {
+          sendEmail({
+            type: 'approval_status',
+            to: userEmail,
+            data: { status: newStatus },
+          });
+        }
         
         toast({
             title: "Status Updated",

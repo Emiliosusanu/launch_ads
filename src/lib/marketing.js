@@ -1,8 +1,29 @@
-
 import { supabase } from '@/lib/customSupabaseClient';
 import { toast } from '@/components/ui/use-toast';
 
 export const marketingService = {
+  sendEmail: async (payload) => {
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(text || 'Email send failed');
+      }
+
+      return await res.json().catch(() => ({ ok: true }));
+    } catch (e) {
+      console.warn('Email send failed:', e);
+      return { ok: false };
+    }
+  },
+
   subscribe: async (email) => {
     // 1. Validate Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -40,10 +61,13 @@ export const marketingService = {
     
     console.log('Successfully subscribed:', data);
 
-    // 4. Trigger simulated email sequence (purely informational)
-    marketingService.triggerEmailSequence(email);
+    // 4. Send real early-access confirmation email
+    marketingService.sendEmail({
+      type: 'early_access_confirmation',
+      to: email,
+    });
 
-    return { success: true, message: "You can log in now to complete your beta access. No email confirmation is required." };
+    return { success: true, message: "Spot secured. Check your email for confirmation." };
   },
 
   triggerEmailSequence: (email) => {

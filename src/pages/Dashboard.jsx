@@ -31,6 +31,28 @@ const Dashboard = () => {
   const { toast } = useToast();
   const scrollRef = useRef(null);
 
+  const sendEmail = async (payload) => {
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(text || 'Email send failed');
+      }
+
+      return await res.json().catch(() => ({ ok: true }));
+    } catch (e) {
+      console.warn('Email send failed:', e);
+      return { ok: false };
+    }
+  };
+
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -359,6 +381,18 @@ const fetchUserDataAndMessages = async (email) => {
         .select();
 
       if (error) throw error;
+
+      // Notify admin/support by email about user's message (best-effort)
+      if (receiverEmail) {
+        sendEmail({
+          type: 'user_chat_message',
+          to: receiverEmail,
+          data: {
+            sender_email: userData.email,
+            message: newMessage,
+          },
+        });
+      }
 
       const insertedMessage =
         data && data[0]
