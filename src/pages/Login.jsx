@@ -25,8 +25,9 @@ const Login = () => {
         // 1. Check if user exists in our database and get their role
         const { data: userRecord, error: checkError } = await supabase
             .from('ADSPILOT_name')
-            .select('id, email, is_admin')
+            .select('id, email, is_admin, beta_status')
             .eq('email', email)
+            .limit(1)
             .maybeSingle();
 
         if (checkError) {
@@ -39,6 +40,16 @@ const Login = () => {
                 variant: "destructive",
                 title: "Access Denied",
                 description: "This email is not registered for beta access."
+            });
+            setIsLoading(false);
+            return;
+        }
+
+        if (userRecord.is_admin !== true && String(userRecord.beta_status || '').toLowerCase() !== 'confirmed') {
+            toast({
+                variant: "destructive",
+                title: "Email not confirmed",
+                description: "Please confirm your email to activate your beta spot. Go back to the homepage and request a new confirmation email.",
             });
             setIsLoading(false);
             return;

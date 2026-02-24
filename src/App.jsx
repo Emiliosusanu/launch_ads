@@ -31,6 +31,7 @@ import About from '@/pages/About';
 import Careers from '@/pages/Careers';
 import Legal from '@/pages/Legal';
 import Contact from '@/pages/Contact';
+import VerifyEmail from '@/pages/VerifyEmail';
 import { AuthProvider } from '@/contexts/SupabaseAuthContext';
 
 function MetaPixelPageView() {
@@ -125,6 +126,7 @@ function App() {
             <Route path="/legal" element={<Legal />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/profile" element={<EditProfile />} />
             <Route path="/admin" element={<AdminLogin />} />

@@ -23,8 +23,8 @@ const FinalCTA = () => {
         });
       }
       toast({
-        title: "Spot Secured! 🚀",
-        description: "Check your email for confirmation. You can also log in any time with this address.",
+        title: "Check your email",
+        description: "Confirm your email to reserve your beta spot. If you don’t confirm, your spot won’t be reserved.",
         className: "bg-[#1F1F25] border-[#2ECC71] text-white"
       });
       setEmail('');

@@ -31,11 +31,12 @@ export const marketingService = {
       throw new Error("That doesn\'t look like a valid email yet. Double-check and try again.");
     }
 
-    // 2. Check for existing user
+    // 2. Check for existing (already confirmed) user
     const { data: existingUsers, error: checkError } = await supabase
       .from('ADSPILOT_name')
-      .select('email')
+      .select('email, beta_status')
       .eq('email', email)
+      .limit(1)
       .maybeSingle();
 
     if (checkError) {
@@ -43,31 +44,27 @@ export const marketingService = {
       throw new Error("We couldn\'t verify this email right now. Please try again in a moment.");
     }
 
-    if (existingUsers) {
+    if (existingUsers && String(existingUsers.beta_status || '').toLowerCase() === 'confirmed') {
       // User exists
       throw new Error("You\'re already on the Inteliads beta list with this email. Try logging in or use another address.");
     }
 
-    // 3. Store in Supabase Database
-    const { data, error } = await supabase
-      .from('ADSPILOT_name')
-      .insert([{ email: email }])
-      .select();
-
-    if (error) {
-      console.error('Supabase insert error:', error);
-      throw new Error("We couldn\'t add you to the beta list right now. Please try again in a few minutes.");
-    }
-    
-    console.log('Successfully subscribed:', data);
-
-    // 4. Send real early-access confirmation email
-    marketingService.sendEmail({
-      type: 'early_access_confirmation',
-      to: email,
+    // 3. Request confirmation email (do not reserve spot until confirmed)
+    const res = await fetch('/api/request-early-access', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
     });
 
-    return { success: true, message: "Spot secured. Check your email for confirmation." };
+    if (!res.ok) {
+      const json = await res.json().catch(() => null);
+      const msg = json?.error || 'We could not send a confirmation email right now. Please try again.';
+      throw new Error(msg);
+    }
+
+    return { success: true, message: "Check your email to confirm and reserve your spot." };
   },
 
   triggerEmailSequence: (email) => {
