@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/ui/logo';
+import { supabase } from '@/lib/customSupabaseClient';
 
 const VerifyEmail = () => {
   const location = useLocation();
@@ -31,24 +32,23 @@ const VerifyEmail = () => {
       }
 
       try {
-        const res = await fetch('/api/confirm-early-access', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token }),
+        const { data, error } = await supabase.functions.invoke('confirm-early-access', {
+          body: { token },
         });
 
-        const json = await res.json().catch(() => null);
-
-        if (!res.ok) {
-          const errMsg = json?.error || 'Verification failed.';
+        if (error) {
           setStatus('error');
-          setMessage(errMsg);
+          setMessage(error.message || 'Verification failed.');
           return;
         }
 
-        const s = json?.status;
+        if (data?.error) {
+          setStatus('error');
+          setMessage(data.error || 'Verification failed.');
+          return;
+        }
+
+        const s = data?.status;
         if (s === 'already_confirmed') {
           setStatus('ok');
           setMessage('Email already confirmed. You can log in any time.');

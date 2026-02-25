@@ -101,6 +101,11 @@ export default async function handler(req, res) {
     return;
   }
 
+  res.statusCode = 410;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ error: 'This endpoint has moved to Supabase Edge Functions' }));
+  return;
+
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const hmacSecret = process.env.EARLY_ACCESS_HMAC_SECRET;

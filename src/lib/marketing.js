@@ -4,20 +4,19 @@ import { toast } from '@/components/ui/use-toast';
 export const marketingService = {
   sendEmail: async (payload) => {
     try {
-      const res = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+      const { data, error } = await supabase.functions.invoke('send-email', {
+        body: payload,
       });
 
-      if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(text || 'Email send failed');
+      if (error) {
+        throw new Error(error.message || 'Email send failed');
       }
 
-      return await res.json().catch(() => ({ ok: true }));
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      return data || { ok: true };
     } catch (e) {
       console.warn('Email send failed:', e);
       return { ok: false };
@@ -50,18 +49,16 @@ export const marketingService = {
     }
 
     // 3. Request confirmation email (do not reserve spot until confirmed)
-    const res = await fetch('/api/request-early-access', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
+    const { data, error } = await supabase.functions.invoke('request-early-access', {
+      body: { email },
     });
 
-    if (!res.ok) {
-      const json = await res.json().catch(() => null);
-      const msg = json?.error || 'We could not send a confirmation email right now. Please try again.';
-      throw new Error(msg);
+    if (error) {
+      throw new Error(error.message || 'We could not send a confirmation email right now. Please try again.');
+    }
+
+    if (data?.error) {
+      throw new Error(data.error);
     }
 
     return { success: true, message: "Check your email to confirm and reserve your spot." };

@@ -59,20 +59,19 @@ const AdminDashboard = () => {
 
   const sendEmail = async (payload) => {
     try {
-      const res = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+      const { data, error } = await supabase.functions.invoke('send-email', {
+        body: payload,
       });
 
-      if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(text || 'Email send failed');
+      if (error) {
+        throw new Error(error.message || 'Email send failed');
       }
 
-      return await res.json().catch(() => ({ ok: true }));
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      return data || { ok: true };
     } catch (e) {
       console.warn('Email send failed:', e);
       return { ok: false };

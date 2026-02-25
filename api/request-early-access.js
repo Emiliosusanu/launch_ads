@@ -118,6 +118,11 @@ export default async function handler(req, res) {
     return;
   }
 
+  res.statusCode = 410;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ error: 'This endpoint has moved to Supabase Edge Functions' }));
+  return;
+
   const apiToken = process.env.MAILERSEND_API_TOKEN;
   const from = process.env.MAIL_FROM;
   const replyTo = process.env.MAIL_REPLY_TO;
