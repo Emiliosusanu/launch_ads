@@ -12,6 +12,11 @@ declare const Deno: {
 
 const encoder = new TextEncoder();
 
+const replaceBrand = (value: string | undefined) => {
+  if (typeof value !== 'string') return value;
+  return value.replace(/KDPInsights/gi, 'Inteliads');
+};
+
 const isValidEmail = (email: unknown): email is string => {
   if (typeof email !== 'string') return false;
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -112,17 +117,22 @@ Deno.serve(async (req: Request) => {
   }
 
   const mailgunApiKey = Deno.env.get('MAILGUN_API_KEY');
-  const mailgunDomain = Deno.env.get('MAILGUN_DOMAIN');
+  const mailgunDomain = Deno.env.get('MAILGUN_DOMAIN_WAITLIST') || Deno.env.get('MAILGUN_DOMAIN');
   const mailgunApiBase = Deno.env.get('MAILGUN_API_BASE') || 'https://api.mailgun.net';
-  const from = Deno.env.get('MAIL_FROM') || Deno.env.get('MAILGUN_FROM');
-  const replyTo = Deno.env.get('MAIL_REPLY_TO') || Deno.env.get('MAILGUN_REPLY_TO');
+  const from = replaceBrand(
+    Deno.env.get('MAILGUN_FROM_WAITLIST') || Deno.env.get('MAIL_FROM') || Deno.env.get('MAILGUN_FROM')
+  );
+  const replyTo = replaceBrand(
+    Deno.env.get('MAILGUN_REPLY_TO_WAITLIST') || Deno.env.get('MAIL_REPLY_TO') || Deno.env.get('MAILGUN_REPLY_TO')
+  );
   const appUrl = Deno.env.get('APP_URL');
   const hmacSecret = Deno.env.get('EARLY_ACCESS_HMAC_SECRET');
 
   if (!mailgunApiKey || !mailgunDomain || !from || !appUrl || !hmacSecret) {
     return new Response(
       JSON.stringify({
-        error: 'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN, MAIL_FROM (or MAILGUN_FROM), APP_URL, or EARLY_ACCESS_HMAC_SECRET environment variables',
+        error:
+          'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN (or MAILGUN_DOMAIN_WAITLIST), MAIL_FROM (or MAILGUN_FROM / MAILGUN_FROM_WAITLIST), APP_URL, or EARLY_ACCESS_HMAC_SECRET environment variables',
       }),
       {
         status: 500,
@@ -150,19 +160,77 @@ Deno.serve(async (req: Request) => {
   const token = await createSignedToken({ email, expiresAtMs, secret: hmacSecret });
   const confirmUrl = `${String(appUrl).replace(/\/$/, '')}/verify-email?token=${encodeURIComponent(token)}`;
 
-  const subject = 'Confirm your email for Inteliads beta';
+  const subject = 'Confirm your email to join the Inteliads beta waitlist';
   const html = `
-    <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; line-height: 1.6; color: #111;">
-      <h2 style="margin:0 0 12px;">Confirm your email</h2>
-      <p style="margin:0 0 12px;">Click the button below to confirm your email and reserve your beta spot.</p>
-      <p style="margin:18px 0 18px;">
-        <a href="${confirmUrl}" style="display:inline-block; padding:10px 14px; background:#6A00FF; color:#fff; text-decoration:none; border-radius:10px; font-weight:700;">
-          Confirm my email
-        </a>
-      </p>
-      <p style="margin:0 0 12px; font-size:12px; color:#666;">This link expires in 48 hours.</p>
-      <p style="margin:24px 0 0; font-size:12px; color:#666;">If you didn't request this, you can ignore this email.</p>
+    <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:transparent;">
+      Confirm your email to join the Inteliads beta waitlist.
     </div>
+
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#0b0b10; margin:0; padding:0; width:100%;">
+      <tr>
+        <td align="center" style="padding:32px 14px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" width="560" style="width:560px; max-width:560px;">
+            <tr>
+              <td style="padding:0 0 12px;">
+                <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; font-size:14px; color:#a1a1aa; letter-spacing:0.08em; text-transform:uppercase;">
+                  Inteliads
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="background: linear-gradient(135deg, rgba(106,0,255,0.25), rgba(255,90,0,0.18)); border-radius:20px; padding:1px;">
+                <div style="background:#111118; border-radius:19px; padding:28px 22px; border:1px solid rgba(255,255,255,0.06);">
+                  <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color:#ffffff;">
+                    <h1 style="margin:0 0 10px; font-size:28px; line-height:1.2; font-weight:800; letter-spacing:-0.02em;">
+                      Confirm your email
+                    </h1>
+
+                    <p style="margin:0 0 14px; font-size:15px; line-height:1.6; color:#d4d4d8;">
+                      Hey — <b style="color:#ffffff;">The Royaltix Team</b> here (founders of Inteliads). You're one click away from joining the waiting list and becoming one of our first beta testers.
+                    </p>
+
+                    <p style="margin:0 0 18px; font-size:15px; line-height:1.6; color:#d4d4d8;">
+                      Confirm your email to reserve your spot:
+                    </p>
+
+                    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 18px;">
+                      <tr>
+                        <td align="center" style="border-radius:12px; background:#ff5a00;">
+                          <a href="${confirmUrl}" style="display:inline-block; padding:12px 16px; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; font-weight:800; font-size:14px; color:#0b0b10; text-decoration:none; border-radius:12px;">
+                            Confirm & join the waitlist
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <div style="margin:0 0 18px; padding:14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:14px;">
+                      <div style="font-size:13px; color:#a1a1aa; line-height:1.6;">
+                        If the button doesn't work, copy and paste this link into your browser:
+                        <br />
+                        <a href="${confirmUrl}" style="color:#c4b5fd; word-break:break-all;">${confirmUrl}</a>
+                      </div>
+                    </div>
+
+                    <p style="margin:0; font-size:12px; color:#a1a1aa; line-height:1.6;">
+                      This link expires in 48 hours. If you didn't request this, you can safely ignore this email.
+                    </p>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:14px 6px 0;">
+                <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; font-size:12px; color:#71717a; line-height:1.6; text-align:center;">
+                  © ${new Date().getFullYear()} Inteliads
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   `.trim();
 
   try {
