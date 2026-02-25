@@ -268,8 +268,8 @@ Deno.serve(async (req: Request) => {
   const mailgunApiKey = Deno.env.get('MAILGUN_API_KEY');
   const mailgunDomain = Deno.env.get('MAILGUN_DOMAIN');
   const mailgunApiBase = Deno.env.get('MAILGUN_API_BASE') || 'https://api.mailgun.net';
-  const from = Deno.env.get('MAIL_FROM');
-  const replyTo = Deno.env.get('MAIL_REPLY_TO');
+  const from = Deno.env.get('MAIL_FROM') || Deno.env.get('MAILGUN_FROM');
+  const replyTo = Deno.env.get('MAIL_REPLY_TO') || Deno.env.get('MAILGUN_REPLY_TO');
   const appUrl = Deno.env.get('APP_URL') || '';
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL');
@@ -279,7 +279,7 @@ Deno.serve(async (req: Request) => {
   if (!mailgunApiKey || !mailgunDomain || !from || !supabaseUrl || !serviceRoleKey) {
     return new Response(
       JSON.stringify({
-        error: 'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN, MAIL_FROM, SUPABASE_URL, or SUPABASE_SERVICE_ROLE_KEY environment variables',
+        error: 'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN, MAIL_FROM (or MAILGUN_FROM), SUPABASE_URL, or SUPABASE_SERVICE_ROLE_KEY environment variables',
       }),
       {
         status: 500,

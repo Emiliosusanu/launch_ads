@@ -114,15 +114,15 @@ Deno.serve(async (req: Request) => {
   const mailgunApiKey = Deno.env.get('MAILGUN_API_KEY');
   const mailgunDomain = Deno.env.get('MAILGUN_DOMAIN');
   const mailgunApiBase = Deno.env.get('MAILGUN_API_BASE') || 'https://api.mailgun.net';
-  const from = Deno.env.get('MAIL_FROM');
-  const replyTo = Deno.env.get('MAIL_REPLY_TO');
+  const from = Deno.env.get('MAIL_FROM') || Deno.env.get('MAILGUN_FROM');
+  const replyTo = Deno.env.get('MAIL_REPLY_TO') || Deno.env.get('MAILGUN_REPLY_TO');
   const appUrl = Deno.env.get('APP_URL');
   const hmacSecret = Deno.env.get('EARLY_ACCESS_HMAC_SECRET');
 
   if (!mailgunApiKey || !mailgunDomain || !from || !appUrl || !hmacSecret) {
     return new Response(
       JSON.stringify({
-        error: 'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN, MAIL_FROM, APP_URL, or EARLY_ACCESS_HMAC_SECRET environment variables',
+        error: 'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN, MAIL_FROM (or MAILGUN_FROM), APP_URL, or EARLY_ACCESS_HMAC_SECRET environment variables',
       }),
       {
         status: 500,
