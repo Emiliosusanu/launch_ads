@@ -59,62 +59,40 @@ const createSignedToken = async ({
   return `${encodedPayload}.${signature}`;
 };
 
-const parseMailbox = (value: string | null) => {
-  const raw = String(value || '').trim();
-  if (!raw) return { email: '', name: '' };
-
-  if (raw.includes('<') && raw.includes('>')) {
-    const [namePart, emailPartRaw] = raw.split('<');
-    const name = (namePart || '').trim().replace(/"/g, '');
-    const email = String(emailPartRaw || '').replace('>', '').trim();
-    return { email, name };
-  }
-
-  return { email: raw, name: '' };
-};
-
-const sendMailerSendEmail = async ({
-  apiToken,
+const sendMailgunEmail = async ({
+  apiKey,
+  domain,
+  apiBase,
   from,
   replyTo,
   to,
   subject,
   html,
 }: {
-  apiToken: string;
+  apiKey: string;
+  domain: string;
+  apiBase: string;
   from: string;
   replyTo?: string | null;
   to: string;
   subject: string;
   html: string;
 }) => {
-  const parsedFrom = parseMailbox(from);
-  const parsedReplyTo = replyTo ? parseMailbox(replyTo) : null;
+  const form = new URLSearchParams();
+  form.set('from', from);
+  form.set('to', to);
+  form.set('subject', subject);
+  form.set('html', html);
+  if (replyTo) form.set('h:Reply-To', replyTo);
 
-  const payload: Record<string, unknown> = {
-    from: {
-      email: parsedFrom.email,
-      ...(parsedFrom.name ? { name: parsedFrom.name } : {}),
-    },
-    to: [{ email: to }],
-    subject,
-    html,
-  };
-
-  if (parsedReplyTo?.email) {
-    payload.reply_to = {
-      email: parsedReplyTo.email,
-      ...(parsedReplyTo.name ? { name: parsedReplyTo.name } : {}),
-    };
-  }
-
-  const res = await fetch('https://api.mailersend.com/v1/email', {
+  const auth = btoa(`api:${apiKey}`);
+  const res = await fetch(`${apiBase.replace(/\/$/, '')}/v3/${encodeURIComponent(domain)}/messages`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${apiToken}`,
-      'Content-Type': 'application/json',
+      Authorization: `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: JSON.stringify(payload),
+    body: form.toString(),
   });
 
   const json = await res.json().catch(() => null);
@@ -133,16 +111,18 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  const apiToken = Deno.env.get('MAILERSEND_API_TOKEN');
+  const mailgunApiKey = Deno.env.get('MAILGUN_API_KEY');
+  const mailgunDomain = Deno.env.get('MAILGUN_DOMAIN');
+  const mailgunApiBase = Deno.env.get('MAILGUN_API_BASE') || 'https://api.mailgun.net';
   const from = Deno.env.get('MAIL_FROM');
   const replyTo = Deno.env.get('MAIL_REPLY_TO');
   const appUrl = Deno.env.get('APP_URL');
   const hmacSecret = Deno.env.get('EARLY_ACCESS_HMAC_SECRET');
 
-  if (!apiToken || !from || !appUrl || !hmacSecret) {
+  if (!mailgunApiKey || !mailgunDomain || !from || !appUrl || !hmacSecret) {
     return new Response(
       JSON.stringify({
-        error: 'Missing MAILERSEND_API_TOKEN, MAIL_FROM, APP_URL, or EARLY_ACCESS_HMAC_SECRET environment variables',
+        error: 'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN, MAIL_FROM, APP_URL, or EARLY_ACCESS_HMAC_SECRET environment variables',
       }),
       {
         status: 500,
@@ -186,8 +166,10 @@ Deno.serve(async (req: Request) => {
   `.trim();
 
   try {
-    const sendRes = await sendMailerSendEmail({
-      apiToken,
+    const sendRes = await sendMailgunEmail({
+      apiKey: mailgunApiKey,
+      domain: mailgunDomain,
+      apiBase: mailgunApiBase,
       from,
       replyTo,
       to: email,
@@ -196,7 +178,7 @@ Deno.serve(async (req: Request) => {
     });
 
     if (!sendRes.ok) {
-      return new Response(JSON.stringify({ error: 'MailerSend request failed', details: sendRes.json }), {
+      return new Response(JSON.stringify({ error: 'Mailgun request failed', details: sendRes.json }), {
         status: sendRes.status || 502,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
