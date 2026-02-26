@@ -105,6 +105,19 @@ const AdminDashboard = () => {
   const [broadcastImportant, setBroadcastImportant] = useState(false);
   const [broadcastSending, setBroadcastSending] = useState(false);
 
+  const [isBulkEmailOpen, setIsBulkEmailOpen] = useState(false);
+  const [bulkTab, setBulkTab] = useState('send');
+  const [bulkTarget, setBulkTarget] = useState('all_confirmed');
+  const [bulkSubject, setBulkSubject] = useState('');
+  const [bulkHtml, setBulkHtml] = useState('');
+  const [bulkPastedEmails, setBulkPastedEmails] = useState('');
+  const [bulkMarkContacted, setBulkMarkContacted] = useState(true);
+  const [bulkSending, setBulkSending] = useState(false);
+  const [bulkAdminKey, setBulkAdminKey] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return localStorage.getItem('admin_bulk_email_key') || '';
+  });
+
   // Settings State
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [appSettings, setAppSettings] = useState([]);
@@ -295,6 +308,104 @@ const AdminDashboard = () => {
         setUsers(data || []);
     } catch (error) {
         console.error('Error fetching users:', error);
+    }
+  };
+
+  const parseEmailList = (raw) => {
+    if (typeof raw !== 'string') return [];
+    const parts = raw
+      .split(/[\s,;]+/g)
+      .map((s) => String(s || '').trim().toLowerCase())
+      .filter(Boolean);
+    const valid = parts.filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e));
+    return Array.from(new Set(valid));
+  };
+
+  const contactedUsers = useMemo(() => {
+    return (users || []).filter((u) => u && u.is_admin !== true && u.email_sent === true && u.email);
+  }, [users]);
+
+  const bulkRecipientCount = useMemo(() => {
+    if (bulkTarget === 'pasted') return parseEmailList(bulkPastedEmails).length;
+    if (bulkTarget === 'all') return (users || []).filter((u) => u && u.is_admin !== true && u.email).length;
+    return (users || []).filter(
+      (u) => u && u.is_admin !== true && u.email && String(u.beta_status || '').toLowerCase() === 'confirmed'
+    ).length;
+  }, [bulkTarget, bulkPastedEmails, users]);
+
+  const handleSendBulkEmail = async () => {
+    if (!currentUser?.email) return;
+
+    const key = String(bulkAdminKey || '').trim();
+    if (!key) {
+      toast({
+        variant: 'destructive',
+        title: 'Missing key',
+        description: 'Enter your ADMIN_BULK_EMAIL_KEY to send emails.',
+      });
+      return;
+    }
+
+    if (!bulkSubject.trim()) {
+      toast({ variant: 'destructive', title: 'Missing subject', description: 'Please add an email subject.' });
+      return;
+    }
+
+    if (!bulkHtml.trim()) {
+      toast({ variant: 'destructive', title: 'Missing content', description: 'Please paste your email body.' });
+      return;
+    }
+
+    const emails = bulkTarget === 'pasted' ? parseEmailList(bulkPastedEmails) : [];
+    if (bulkTarget === 'pasted' && !emails.length) {
+      toast({
+        variant: 'destructive',
+        title: 'No emails',
+        description: 'Paste at least one valid email address.',
+      });
+      return;
+    }
+
+    setBulkSending(true);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('admin_bulk_email_key', key);
+      }
+
+      const { data, error } = await supabase.functions.invoke('admin-bulk-email', {
+        headers: { 'x-admin-key': key },
+        body: {
+          admin_email: currentUser.email,
+          target: bulkTarget,
+          subject: bulkSubject,
+          html: bulkHtml,
+          emails,
+          mark_contacted: bulkMarkContacted,
+        },
+      });
+
+      if (error) throw new Error(error.message || 'Bulk email failed');
+      if (data?.error) throw new Error(data.error);
+
+      toast({
+        title: data?.failed ? 'Sent with warnings' : 'Email sent',
+        description: `Sent ${data?.sent ?? 0}/${data?.recipients ?? 0}. Failed: ${data?.failed ?? 0}.`,
+        className: 'bg-[#1F1F25] border-[#2ECC71] text-white',
+      });
+
+      await fetchUsers();
+      setBulkSubject('');
+      setBulkHtml('');
+      setBulkPastedEmails('');
+      setIsBulkEmailOpen(false);
+    } catch (e) {
+      toast({
+        variant: 'destructive',
+        title: 'Send failed',
+        description: e?.message || 'Could not send email.',
+      });
+    } finally {
+      setBulkSending(false);
     }
   };
 
@@ -713,6 +824,17 @@ const handleSendMessage = async () => {
               <Button
                 variant="outline"
                 size="sm"
+                className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5"
+                onClick={() => {
+                  setBulkTab('send');
+                  setIsBulkEmailOpen(true);
+                }}
+              >
+                <Send className="w-4 h-4 mr-2" /> Bulk Email
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5 hidden sm:inline-flex"
                 onClick={() => setIsExportOpen(true)}
               >
@@ -1107,6 +1229,144 @@ const handleSendMessage = async () => {
               )}
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isBulkEmailOpen} onOpenChange={setIsBulkEmailOpen}>
+        <DialogContent className="bg-[#16161a] border border-white/10 text-white sm:max-w-[720px]">
+          <DialogHeader>
+            <DialogTitle>Bulk Email</DialogTitle>
+            <DialogDescription>
+              Send a promotional email to your list (all confirmed waitlist, all users, or a pasted list). The key is required.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex gap-1 bg-[#0B0B0F] rounded-lg p-1 border border-white/10">
+            {['send', 'contacted'].map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setBulkTab(t)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  bulkTab === t ? 'bg-[#1F1F25] text-white shadow-sm border border-white/10' : 'text-gray-500 hover:text-gray-300'
+                }`}
+              >
+                {t === 'send' ? 'Send' : `Contacted (${contactedUsers.length})`}
+              </button>
+            ))}
+          </div>
+
+          {bulkTab === 'send' ? (
+            <div className="space-y-4 py-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Target</label>
+                  <select
+                    value={bulkTarget}
+                    onChange={(e) => setBulkTarget(e.target.value)}
+                    className="w-full h-10 rounded-md bg-[#0B0B0F] border border-white/10 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6A00FF]"
+                  >
+                    <option value="all_confirmed">All confirmed waitlist users</option>
+                    <option value="all">All users</option>
+                    <option value="pasted">Paste email list</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">ADMIN_BULK_EMAIL_KEY</label>
+                  <Input
+                    value={bulkAdminKey}
+                    onChange={(e) => setBulkAdminKey(e.target.value)}
+                    className="bg-[#0B0B0F] border-white/10 text-white"
+                    placeholder="Paste the key to authorize"
+                  />
+                </div>
+              </div>
+
+              {bulkTarget === 'pasted' && (
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Email list</label>
+                  <textarea
+                    value={bulkPastedEmails}
+                    onChange={(e) => setBulkPastedEmails(e.target.value)}
+                    rows={4}
+                    className="w-full rounded-md bg-[#0B0B0F] border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6A00FF] resize-none"
+                    placeholder="Paste emails separated by commas, spaces, or new lines"
+                  />
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Subject</label>
+                <Input
+                  value={bulkSubject}
+                  onChange={(e) => setBulkSubject(e.target.value)}
+                  className="bg-[#0B0B0F] border-white/10 text-white"
+                  placeholder="Promo subject"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Email body (HTML or plain text)</label>
+                <textarea
+                  value={bulkHtml}
+                  onChange={(e) => setBulkHtml(e.target.value)}
+                  rows={7}
+                  className="w-full rounded-md bg-[#0B0B0F] border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6A00FF] resize-none"
+                  placeholder="Write your promo email here..."
+                />
+              </div>
+
+              <div className="flex items-center justify-between gap-4">
+                <label className="flex items-center gap-2 text-sm text-gray-300">
+                  <input
+                    type="checkbox"
+                    checked={bulkMarkContacted}
+                    onChange={(e) => setBulkMarkContacted(e.target.checked)}
+                    className="h-4 w-4 rounded border-white/20 bg-[#0B0B0F]"
+                  />
+                  Mark recipients as contacted
+                </label>
+                <div className="text-xs text-gray-500">Estimated recipients: {bulkRecipientCount}</div>
+              </div>
+
+              <Button
+                onClick={handleSendBulkEmail}
+                disabled={bulkSending || !bulkSubject.trim() || !bulkHtml.trim()}
+                className="w-full bg-[#6A00FF] hover:bg-[#7B2FFF] text-white"
+              >
+                {bulkSending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Send Email'}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3 py-2">
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-sm text-gray-300">
+                  Users marked as contacted (<span className="font-semibold">{contactedUsers.length}</span>)
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5"
+                  onClick={async () => {
+                    const text = contactedUsers.map((u) => u.email).filter(Boolean).join('\n');
+                    try {
+                      await navigator.clipboard.writeText(text);
+                      toast({ title: 'Copied', description: 'Contacted emails copied to clipboard.' });
+                    } catch {
+                      toast({ variant: 'destructive', title: 'Copy failed', description: 'Could not copy to clipboard.' });
+                    }
+                  }}
+                >
+                  Copy list
+                </Button>
+              </div>
+
+              <div className="rounded-lg border border-white/10 bg-[#0b0b12] p-3 max-h-[360px] overflow-y-auto text-[11px] sm:text-xs font-mono text-gray-100 whitespace-pre">
+                {contactedUsers.map((u) => u.email).filter(Boolean).join('\n') || 'No contacted users yet.'}
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
