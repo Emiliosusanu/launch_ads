@@ -56,6 +56,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const chatScrollRef = useRef(null);
+  const bulkEditorRef = useRef(null);
 
   const sendEmail = async (payload) => {
     try {
@@ -110,6 +111,7 @@ const AdminDashboard = () => {
   const [bulkTarget, setBulkTarget] = useState('all_confirmed');
   const [bulkSubject, setBulkSubject] = useState('');
   const [bulkHtml, setBulkHtml] = useState('');
+  const [bulkEditorMode, setBulkEditorMode] = useState('visual');
   const [bulkPastedEmails, setBulkPastedEmails] = useState('');
   const [bulkMarkContacted, setBulkMarkContacted] = useState(true);
   const [bulkSending, setBulkSending] = useState(false);
@@ -117,6 +119,9 @@ const AdminDashboard = () => {
     if (typeof window === 'undefined') return '';
     return localStorage.getItem('admin_bulk_email_key') || '';
   });
+  const [bulkTemplates, setBulkTemplates] = useState([]);
+  const [bulkSelectedTemplateId, setBulkSelectedTemplateId] = useState('');
+  const [bulkTemplateName, setBulkTemplateName] = useState('');
 
   // Settings State
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -311,6 +316,88 @@ const AdminDashboard = () => {
     }
   };
 
+  const readBulkTemplates = () => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const raw = localStorage.getItem('admin_bulk_email_templates');
+      const parsed = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(parsed)) return [];
+      return parsed
+        .filter((t) => t && typeof t === 'object')
+        .map((t) => ({
+          id: String(t.id || ''),
+          name: String(t.name || ''),
+          subject: String(t.subject || ''),
+          html: String(t.html || ''),
+          updated_at: String(t.updated_at || ''),
+        }))
+        .filter((t) => t.id && t.name);
+    } catch {
+      return [];
+    }
+  };
+
+  const writeBulkTemplates = (templates) => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('admin_bulk_email_templates', JSON.stringify(templates || []));
+  };
+
+  useEffect(() => {
+    setBulkTemplates(readBulkTemplates());
+  }, []);
+
+  useEffect(() => {
+    if (!isBulkEmailOpen) return;
+    setBulkTemplates(readBulkTemplates());
+  }, [isBulkEmailOpen]);
+
+  useEffect(() => {
+    if (!isBulkEmailOpen) return;
+    if (bulkEditorMode !== 'visual') return;
+    if (!bulkEditorRef.current) return;
+    const next = String(bulkHtml || '');
+    if (bulkEditorRef.current.innerHTML !== next) {
+      bulkEditorRef.current.innerHTML = next;
+    }
+  }, [isBulkEmailOpen, bulkEditorMode, bulkHtml]);
+
+  const upsertBulkTemplate = ({ id, name, subject, html }) => {
+    const now = new Date().toISOString();
+    const next = (bulkTemplates || []).filter((t) => t && t.id !== id);
+    next.unshift({ id, name, subject, html, updated_at: now });
+    setBulkTemplates(next);
+    writeBulkTemplates(next);
+  };
+
+  const deleteBulkTemplate = (id) => {
+    const next = (bulkTemplates || []).filter((t) => t && t.id !== id);
+    setBulkTemplates(next);
+    writeBulkTemplates(next);
+    if (bulkSelectedTemplateId === id) {
+      setBulkSelectedTemplateId('');
+    }
+  };
+
+  const applyBulkTemplate = (template) => {
+    if (!template) return;
+    setBulkSubject(String(template.subject || ''));
+    setBulkHtml(String(template.html || ''));
+    setBulkTemplateName(String(template.name || ''));
+    setBulkSelectedTemplateId(String(template.id || ''));
+    if (bulkEditorRef.current && bulkEditorMode === 'visual') {
+      bulkEditorRef.current.innerHTML = String(template.html || '');
+    }
+  };
+
+  const execEditorCommand = (command, value) => {
+    try {
+      if (!bulkEditorRef.current) return;
+      bulkEditorRef.current.focus();
+      document.execCommand(command, false, value);
+      setBulkHtml(bulkEditorRef.current.innerHTML);
+    } catch {}
+  };
+
   const parseEmailList = (raw) => {
     if (typeof raw !== 'string') return [];
     const parts = raw
@@ -351,7 +438,11 @@ const AdminDashboard = () => {
       return;
     }
 
-    if (!bulkHtml.trim()) {
+    const htmlToSend = bulkEditorMode === 'visual' && bulkEditorRef.current
+      ? String(bulkEditorRef.current.innerHTML || '')
+      : String(bulkHtml || '');
+
+    if (!htmlToSend.trim()) {
       toast({ variant: 'destructive', title: 'Missing content', description: 'Please paste your email body.' });
       return;
     }
@@ -378,7 +469,7 @@ const AdminDashboard = () => {
           admin_email: currentUser.email,
           target: bulkTarget,
           subject: bulkSubject,
-          html: bulkHtml,
+          html: htmlToSend,
           emails,
           mark_contacted: bulkMarkContacted,
         },
@@ -1283,6 +1374,83 @@ const handleSendMessage = async () => {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Template</label>
+                  <select
+                    value={bulkSelectedTemplateId}
+                    onChange={(e) => {
+                      const nextId = e.target.value;
+                      setBulkSelectedTemplateId(nextId);
+                      const t = (bulkTemplates || []).find((x) => String(x.id) === String(nextId));
+                      if (t) applyBulkTemplate(t);
+                    }}
+                    className="w-full h-10 rounded-md bg-[#0B0B0F] border border-white/10 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6A00FF]"
+                  >
+                    <option value="">Select a template…</option>
+                    {(bulkTemplates || []).map((t) => (
+                      <option key={t.id} value={t.id}>{t.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Template name</label>
+                  <Input
+                    value={bulkTemplateName}
+                    onChange={(e) => setBulkTemplateName(e.target.value)}
+                    className="bg-[#0B0B0F] border-white/10 text-white"
+                    placeholder="e.g. Feb launch promo"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5"
+                  onClick={() => {
+                    const name = String(bulkTemplateName || '').trim();
+                    const html = bulkEditorMode === 'visual' && bulkEditorRef.current
+                      ? String(bulkEditorRef.current.innerHTML || '')
+                      : String(bulkHtml || '');
+                    if (!name) {
+                      toast({ variant: 'destructive', title: 'Missing name', description: 'Add a template name first.' });
+                      return;
+                    }
+                    if (!bulkSubject.trim() || !html.trim()) {
+                      toast({ variant: 'destructive', title: 'Missing content', description: 'Subject and body are required to save a template.' });
+                      return;
+                    }
+                    const id = bulkSelectedTemplateId || `tpl_${Date.now()}`;
+                    upsertBulkTemplate({ id, name, subject: bulkSubject, html });
+                    setBulkSelectedTemplateId(id);
+                    toast({ title: 'Template saved', description: `Saved “${name}”.` });
+                  }}
+                >
+                  <Save className="w-4 h-4 mr-2" /> Save template
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5"
+                  disabled={!bulkSelectedTemplateId}
+                  onClick={() => {
+                    const id = String(bulkSelectedTemplateId || '');
+                    const t = (bulkTemplates || []).find((x) => String(x.id) === id);
+                    if (!t) return;
+                    const confirmed = window.confirm(`Delete template “${t.name}”?`);
+                    if (!confirmed) return;
+                    deleteBulkTemplate(id);
+                    toast({ title: 'Template deleted', description: 'Template removed.' });
+                  }}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" /> Delete template
+                </Button>
+              </div>
+
               {bulkTarget === 'pasted' && (
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-300">Email list</label>
@@ -1308,13 +1476,72 @@ const handleSendMessage = async () => {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-300">Email body (HTML or plain text)</label>
-                <textarea
-                  value={bulkHtml}
-                  onChange={(e) => setBulkHtml(e.target.value)}
-                  rows={7}
-                  className="w-full rounded-md bg-[#0B0B0F] border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6A00FF] resize-none"
-                  placeholder="Write your promo email here..."
-                />
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex gap-1 bg-[#0B0B0F] rounded-lg p-1 border border-white/10">
+                    {['visual', 'html'].map((m) => (
+                      <button
+                        key={m}
+                        type="button"
+                        onClick={() => setBulkEditorMode(m)}
+                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                          bulkEditorMode === m ? 'bg-[#1F1F25] text-white shadow-sm border border-white/10' : 'text-gray-500 hover:text-gray-300'
+                        }`}
+                      >
+                        {m === 'visual' ? 'Visual' : 'HTML'}
+                      </button>
+                    ))}
+                  </div>
+                  {bulkEditorMode === 'visual' && (
+                    <div className="flex flex-wrap items-center gap-1">
+                      <Button type="button" variant="outline" size="sm" className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5" onClick={() => execEditorCommand('bold')}>
+                        B
+                      </Button>
+                      <Button type="button" variant="outline" size="sm" className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5" onClick={() => execEditorCommand('italic')}>
+                        I
+                      </Button>
+                      <Button type="button" variant="outline" size="sm" className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5" onClick={() => execEditorCommand('underline')}>
+                        U
+                      </Button>
+                      <Button type="button" variant="outline" size="sm" className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5" onClick={() => execEditorCommand('insertUnorderedList')}>
+                        List
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="border-white/10 text-gray-300 hover:text-white hover:bg-white/5"
+                        onClick={() => {
+                          const url = window.prompt('Link URL');
+                          if (!url) return;
+                          execEditorCommand('createLink', url);
+                        }}
+                      >
+                        Link
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                {bulkEditorMode === 'visual' ? (
+                  <div
+                    ref={bulkEditorRef}
+                    contentEditable
+                    suppressContentEditableWarning
+                    onInput={() => {
+                      if (!bulkEditorRef.current) return;
+                      setBulkHtml(bulkEditorRef.current.innerHTML);
+                    }}
+                    className="w-full min-h-[180px] rounded-md bg-[#0B0B0F] border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6A00FF] overflow-y-auto"
+                  />
+                ) : (
+                  <textarea
+                    value={bulkHtml}
+                    onChange={(e) => setBulkHtml(e.target.value)}
+                    rows={8}
+                    className="w-full rounded-md bg-[#0B0B0F] border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6A00FF] resize-none"
+                    placeholder="Write your promo email here (HTML)..."
+                  />
+                )}
               </div>
 
               <div className="flex items-center justify-between gap-4">
