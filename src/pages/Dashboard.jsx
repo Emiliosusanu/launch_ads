@@ -355,14 +355,17 @@ const fetchUserDataAndMessages = async (email) => {
         .from("ADSPILOT_name")
         .select("email")
         .eq("is_admin", true)
-        .limit(1)
-        .maybeSingle();
+        .order('created_at', { ascending: true });
 
       if (adminError) {
         console.warn("Error finding admin:", adminError);
       }
 
-      const receiverEmail = adminData?.email || "support@inteliads.pro";
+      const adminEmails = Array.isArray(adminData)
+        ? adminData.map((a) => a?.email).filter((e) => typeof e === 'string' && e.length)
+        : [];
+
+      const receiverEmail = adminEmails[0] || "support@inteliads.pro";
       const conversationId = [userData.email, receiverEmail]
         .sort()
         .join("_");
@@ -381,24 +384,28 @@ const fetchUserDataAndMessages = async (email) => {
 
       if (error) throw error;
 
-      // Notify admin/support by email about user's message
-      if (receiverEmail) {
-        const emailRes = await sendEmail({
-          type: 'user_chat_message',
-          to: receiverEmail,
-          data: {
-            sender_email: userData.email,
-            message: newMessage,
-          },
-        });
+      // Notify all admins by email about user's message
+      const targets = adminEmails.length ? adminEmails : [receiverEmail];
+      const results = await Promise.all(
+        targets.map((toEmail) =>
+          sendEmail({
+            type: 'user_chat_message',
+            to: toEmail,
+            data: {
+              sender_email: userData.email,
+              message: newMessage,
+            },
+          })
+        )
+      );
 
-        if (!emailRes?.ok) {
-          toast({
-            variant: 'destructive',
-            title: 'Email not sent',
-            description: `Your message was sent, but the email notification failed to send.${emailRes?.error ? ` (${emailRes.error})` : ''}`,
-          });
-        }
+      const firstFailure = results.find((r) => !r?.ok);
+      if (firstFailure) {
+        toast({
+          variant: 'destructive',
+          title: 'Email not sent',
+          description: `Your message was sent, but at least one admin email notification failed to send.${firstFailure?.error ? ` (${firstFailure.error})` : ''}`,
+        });
       }
 
       const insertedMessage =
