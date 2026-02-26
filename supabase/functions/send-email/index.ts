@@ -278,11 +278,22 @@ Deno.serve(async (req: Request) => {
   }
 
   const mailgunApiKey = Deno.env.get('MAILGUN_API_KEY');
-  const mailgunDomain = Deno.env.get('MAILGUN_DOMAIN_TRANSACTIONAL') || Deno.env.get('MAILGUN_DOMAIN');
+  const mailgunDomain =
+    Deno.env.get('MAILGUN_DOMAIN_TRANSACTIONAL') ||
+    Deno.env.get('MAILGUN_DOMAIN') ||
+    Deno.env.get('MAILGUN_DOMAIN_WAITLIST');
   const mailgunApiBase = Deno.env.get('MAILGUN_API_BASE') || 'https://api.mailgun.net';
-  const from = replaceBrand(Deno.env.get('MAILGUN_FROM_TRANSACTIONAL') || Deno.env.get('MAIL_FROM') || Deno.env.get('MAILGUN_FROM'));
+  const from = replaceBrand(
+    Deno.env.get('MAILGUN_FROM_TRANSACTIONAL') ||
+    Deno.env.get('MAIL_FROM') ||
+    Deno.env.get('MAILGUN_FROM') ||
+    Deno.env.get('MAILGUN_FROM_WAITLIST')
+  );
   const replyTo = replaceBrand(
-    Deno.env.get('MAILGUN_REPLY_TO_TRANSACTIONAL') || Deno.env.get('MAIL_REPLY_TO') || Deno.env.get('MAILGUN_REPLY_TO')
+    Deno.env.get('MAILGUN_REPLY_TO_TRANSACTIONAL') ||
+    Deno.env.get('MAIL_REPLY_TO') ||
+    Deno.env.get('MAILGUN_REPLY_TO') ||
+    Deno.env.get('MAILGUN_REPLY_TO_WAITLIST')
   );
   const appUrl = Deno.env.get('APP_URL') || '';
 
@@ -294,7 +305,7 @@ Deno.serve(async (req: Request) => {
     return new Response(
       JSON.stringify({
         error:
-          'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN (or MAILGUN_DOMAIN_TRANSACTIONAL), MAIL_FROM (or MAILGUN_FROM / MAILGUN_FROM_TRANSACTIONAL), SUPABASE_URL, or SUPABASE_SERVICE_ROLE_KEY environment variables',
+          'Missing MAILGUN_API_KEY, MAILGUN_DOMAIN (or MAILGUN_DOMAIN_TRANSACTIONAL / MAILGUN_DOMAIN_WAITLIST), MAIL_FROM (or MAILGUN_FROM / MAILGUN_FROM_TRANSACTIONAL / MAILGUN_FROM_WAITLIST), SUPABASE_URL, or SUPABASE_SERVICE_ROLE_KEY environment variables',
       }),
       {
         status: 500,

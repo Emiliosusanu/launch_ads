@@ -16,15 +16,15 @@ const FinalCTA = () => {
     if (!email) return;
     setIsLoading(true);
     try {
-      await marketingService.subscribe(email);
+      const res = await marketingService.subscribe(email);
       if (typeof window !== 'undefined' && window.fbq) {
         window.fbq('track', 'CompleteRegistration', {
           content_name: 'Email Registration'
         });
       }
       toast({
-        title: "Check your email",
-        description: "Confirm your email to reserve your beta spot. If you don’t confirm, your spot won’t be reserved.",
+        title: res?.message?.toLowerCase?.().includes('already confirmed') ? 'All set' : 'Check your email',
+        description: res?.message || "Confirm your email to join the waitlist. We’ll email you after admin approval.",
         className: "bg-[#1F1F25] border-[#2ECC71] text-white"
       });
       setEmail('');
@@ -74,7 +74,7 @@ const FinalCTA = () => {
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto mb-8">
             <div className="relative w-full">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
-              <Input type="email" placeholder="Enter your email to reserve your spot" value={email} onChange={e => setEmail(e.target.value)} className="h-12 md:h-14 pl-12 bg-[#0B0B0F] border-white/10 text-white placeholder:text-gray-600 focus:border-[#FF7A3D]/50 rounded-xl" required />
+              <Input type="email" placeholder="Enter your email to join the waitlist" value={email} onChange={e => setEmail(e.target.value)} className="h-12 md:h-14 pl-12 bg-[#0B0B0F] border-white/10 text-white placeholder:text-gray-600 focus:border-[#FF7A3D]/50 rounded-xl" required />
             </div>
             <Button type="submit" disabled={isLoading} className="w-full sm:w-auto h-12 md:h-14 px-8 bg-gradient-to-r from-[#FF7A3D] to-[#FF4F2C] hover:from-[#FF8A55] hover:to-[#FF6242] text-white font-bold text-base rounded-xl shadow-lg shadow-[#FF4F2C]/20 transition-all duration-200 whitespace-nowrap">
               {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>

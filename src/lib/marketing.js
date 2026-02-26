@@ -44,8 +44,10 @@ export const marketingService = {
     }
 
     if (existingUsers && String(existingUsers.beta_status || '').toLowerCase() === 'confirmed') {
-      // User exists
-      throw new Error("You\'re already on the Inteliads beta list with this email. Try logging in or use another address.");
+      return {
+        success: true,
+        message: "Your email is already confirmed. If you're not approved yet, please wait — we'll email you once access is granted.",
+      };
     }
 
     // 3. Request confirmation email (do not reserve spot until confirmed)
@@ -61,7 +63,7 @@ export const marketingService = {
       throw new Error(data.error);
     }
 
-    return { success: true, message: "Check your email to confirm and reserve your spot." };
+    return { success: true, message: "Check your email to confirm your address and join the waitlist." };
   },
 
   triggerEmailSequence: (email) => {
@@ -71,7 +73,7 @@ export const marketingService = {
     setTimeout(() => {
       marketingService.sendMockEmail({
         subject: "Welcome to Inteliads Beta",
-        preview: "Your spot is reserved. You can log in any time to complete access.",
+        preview: "Confirm your email to join the waitlist. We'll email you once you're approved.",
       });
     }, 1500);
   },

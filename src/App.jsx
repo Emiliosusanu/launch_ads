@@ -60,7 +60,7 @@ const MidBetaNudge = () => (
           So far, does this look like the help your ads needed?
         </h3>
         <p className="text-sm md:text-base text-gray-300 max-w-xl mx-auto md:mx-0">
-          If you’re curious to see Inteliads in your own numbers, reserve a beta spot now and finish reading the page while we hold your place.
+          If you’re curious to see Inteliads in your own numbers, join the waitlist now and finish reading the page while we review access.
         </p>
       </div>
       <div className="flex flex-col items-center gap-2 w-full md:w-auto">

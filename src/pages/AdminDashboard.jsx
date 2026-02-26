@@ -74,7 +74,7 @@ const AdminDashboard = () => {
       return data || { ok: true };
     } catch (e) {
       console.warn('Email send failed:', e);
-      return { ok: false };
+      return { ok: false, error: e?.message || 'Email send failed' };
     }
   };
   
@@ -579,13 +579,21 @@ const handleSendMessage = async () => {
           await supabase.from('ADSPILOT_name').update({ last_message_date: nowIso }).eq('email', currentUser.email);
         }
 
-        // Notify user by email about admin/support reply (best-effort)
+        // Notify user by email about admin/support reply
         if (selectedUserForChat?.email) {
-          sendEmail({
+          const emailRes = await sendEmail({
             type: 'admin_chat_message',
             to: selectedUserForChat.email,
             data: { message: messageText },
           });
+
+          if (!emailRes?.ok) {
+            toast({
+              variant: 'destructive',
+              title: 'Email not sent',
+              description: `Support message was saved, but the email notification failed to send.${emailRes?.error ? ` (${emailRes.error})` : ''}`,
+            });
+          }
         }
         
       } catch (error) {
@@ -601,13 +609,21 @@ const handleSendMessage = async () => {
         const { error } = await supabase.from('ADSPILOT_name').update({ approval_status: newStatus }).eq('id', userId);
         if (error) throw error;
 
-        // Email user about status update (best-effort)
+        // Email user about status update
         if (userEmail && (newStatus === 'approved' || newStatus === 'rejected')) {
-          sendEmail({
+          const emailRes = await sendEmail({
             type: 'approval_status',
             to: userEmail,
             data: { status: newStatus },
           });
+
+          if (!emailRes?.ok) {
+            toast({
+              variant: 'destructive',
+              title: 'Email not sent',
+              description: `Status was updated, but the email notification failed to send.${emailRes?.error ? ` (${emailRes.error})` : ''}`,
+            });
+          }
         }
         
         toast({

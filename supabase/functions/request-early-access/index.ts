@@ -167,10 +167,10 @@ Deno.serve(async (req: Request) => {
   const token = await createSignedToken({ email, expiresAtMs, secret: hmacSecret });
   const confirmUrl = `${String(appUrl).replace(/\/$/, '')}/verify-email?token=${encodeURIComponent(token)}`;
 
-  const subject = 'Confirm your email to join the Inteliads beta waitlist';
+  const subject = 'Confirm your email for the Inteliads waitlist';
   const html = `
     <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:transparent;">
-      Confirm your email to join the Inteliads beta waitlist.
+      Confirm your email to join the Inteliads waitlist.
     </div>
 
     <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#0b0b10; margin:0; padding:0; width:100%;">
@@ -194,18 +194,18 @@ Deno.serve(async (req: Request) => {
                     </h1>
 
                     <p style="margin:0 0 14px; font-size:15px; line-height:1.6; color:#d4d4d8;">
-                      Hey — <b style="color:#ffffff;">The Royaltix Team</b> here (founders of Inteliads). You're one click away from joining the waiting list and becoming one of our first beta testers.
+                      Hey — <b style="color:#ffffff;">The Royaltix Team</b> here (founders of Inteliads). Please confirm your email address so we know we can reach you.
                     </p>
 
                     <p style="margin:0 0 18px; font-size:15px; line-height:1.6; color:#d4d4d8;">
-                      Confirm your email to reserve your spot:
+                      After confirmation, you’ll be on the waitlist. Final access is granted after admin approval.
                     </p>
 
                     <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 18px;">
                       <tr>
                         <td align="center" style="border-radius:12px; background:#ff5a00;">
                           <a href="${confirmUrl}" style="display:inline-block; padding:12px 16px; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; font-weight:800; font-size:14px; color:#0b0b10; text-decoration:none; border-radius:12px;">
-                            Confirm & join the waitlist
+                            Confirm email address
                           </a>
                         </td>
                       </tr>

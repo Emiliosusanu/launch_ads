@@ -51,12 +51,12 @@ const VerifyEmail = () => {
         const s = data?.status;
         if (s === 'already_confirmed') {
           setStatus('ok');
-          setMessage('Email already confirmed. You can log in any time.');
+          setMessage('Email already confirmed. If you’re approved, you can log in. If not, please wait — we’ll email you once access is granted.');
           return;
         }
 
         setStatus('ok');
-        setMessage('Email confirmed. Your beta spot is reserved.');
+        setMessage('Email confirmed. You’re on the waitlist — we’ll email you once you’re approved.');
       } catch (e) {
         if (cancelled) return;
         setStatus('error');

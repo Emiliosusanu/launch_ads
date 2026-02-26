@@ -48,7 +48,7 @@ const Dashboard = () => {
       return data || { ok: true };
     } catch (e) {
       console.warn('Email send failed:', e);
-      return { ok: false };
+      return { ok: false, error: e?.message || 'Email send failed' };
     }
   };
 
@@ -381,9 +381,9 @@ const fetchUserDataAndMessages = async (email) => {
 
       if (error) throw error;
 
-      // Notify admin/support by email about user's message (best-effort)
+      // Notify admin/support by email about user's message
       if (receiverEmail) {
-        sendEmail({
+        const emailRes = await sendEmail({
           type: 'user_chat_message',
           to: receiverEmail,
           data: {
@@ -391,6 +391,14 @@ const fetchUserDataAndMessages = async (email) => {
             message: newMessage,
           },
         });
+
+        if (!emailRes?.ok) {
+          toast({
+            variant: 'destructive',
+            title: 'Email not sent',
+            description: `Your message was sent, but the email notification failed to send.${emailRes?.error ? ` (${emailRes.error})` : ''}`,
+          });
+        }
       }
 
       const insertedMessage =

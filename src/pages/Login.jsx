@@ -25,7 +25,7 @@ const Login = () => {
         // 1. Check if user exists in our database and get their role
         const { data: userRecord, error: checkError } = await supabase
             .from('ADSPILOT_name')
-            .select('id, email, is_admin, beta_status')
+            .select('id, email, is_admin, beta_status, approval_status')
             .eq('email', email)
             .limit(1)
             .maybeSingle();
@@ -49,7 +49,17 @@ const Login = () => {
             toast({
                 variant: "destructive",
                 title: "Email not confirmed",
-                description: "Please confirm your email to activate your beta spot. Go back to the homepage and request a new confirmation email.",
+                description: "Please confirm your email first. Go back to the homepage and request a new confirmation email.",
+            });
+            setIsLoading(false);
+            return;
+        }
+
+        if (userRecord.is_admin !== true && String(userRecord.approval_status || '').toLowerCase() !== 'approved') {
+            toast({
+                variant: "destructive",
+                title: "Waiting for approval",
+                description: "Your email is confirmed. Your access will be granted after admin approval.",
             });
             setIsLoading(false);
             return;
