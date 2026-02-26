@@ -110,8 +110,15 @@ const supabaseFetch = async ({
     ...(typeof body === 'undefined' ? {} : { body: JSON.stringify(body) }),
   });
 
-  const json = await res.json().catch(() => null);
-  return { ok: res.ok, status: res.status, json };
+  const text = await res.text().catch(() => '');
+  let json: any = null;
+  try {
+    json = text ? JSON.parse(text) : null;
+  } catch {
+    json = null;
+  }
+
+  return { ok: res.ok, status: res.status, json, text };
 };
 
 Deno.serve(async (req: Request) => {
@@ -189,10 +196,20 @@ Deno.serve(async (req: Request) => {
     });
 
     if (!lookup.ok) {
-      return new Response(JSON.stringify({ error: 'Database lookup failed' }), {
+      return new Response(
+        JSON.stringify({
+          error: 'Database lookup failed',
+          details: {
+            status: lookup.status,
+            json: lookup.json,
+            text: lookup.text,
+          },
+        }),
+        {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+        }
+      );
     }
 
     const existing = Array.isArray(lookup.json) ? lookup.json[0] : null;
@@ -215,10 +232,20 @@ Deno.serve(async (req: Request) => {
       });
 
       if (!update.ok) {
-        return new Response(JSON.stringify({ error: 'Failed to confirm spot' }), {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({
+            error: 'Failed to confirm spot',
+            details: {
+              status: update.status,
+              json: update.json,
+              text: update.text,
+            },
+          }),
+          {
+            status: 500,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
       }
 
       return new Response(JSON.stringify({ ok: true, status: 'confirmed' }), {
@@ -237,10 +264,20 @@ Deno.serve(async (req: Request) => {
     });
 
     if (!insert.ok) {
-      return new Response(JSON.stringify({ error: 'Failed to reserve spot' }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({
+          error: 'Failed to reserve spot',
+          details: {
+            status: insert.status,
+            json: insert.json,
+            text: insert.text,
+          },
+        }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
     }
 
     return new Response(JSON.stringify({ ok: true, status: 'confirmed' }), {

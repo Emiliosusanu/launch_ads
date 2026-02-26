@@ -98,8 +98,15 @@ const sendMailgunEmail = async ({
     body: form.toString(),
   });
 
-  const json = await res.json().catch(() => null);
-  return { ok: res.ok, status: res.status, json };
+  const text = await res.text().catch(() => '');
+  let json: any = null;
+  try {
+    json = text ? JSON.parse(text) : null;
+  } catch {
+    json = null;
+  }
+
+  return { ok: res.ok, status: res.status, json, text };
 };
 
 const buildEmail = ({
@@ -357,10 +364,20 @@ Deno.serve(async (req: Request) => {
     });
 
     if (!sendRes.ok) {
-      return new Response(JSON.stringify({ error: 'Mailgun request failed', details: sendRes.json }), {
+      return new Response(
+        JSON.stringify({
+          error: 'Mailgun request failed',
+          details: {
+            status: sendRes.status,
+            json: sendRes.json,
+            text: sendRes.text,
+          },
+        }),
+        {
         status: sendRes.status || 502,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+        }
+      );
     }
 
     return new Response(JSON.stringify({ ok: true, details: sendRes.json }), {
