@@ -8,6 +8,7 @@ import DashboardMockup from '@/components/DashboardMockup';
 const Hero = () => {
   const { toast } = useToast();
   const heroRef = useRef(null);
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -18,10 +19,7 @@ const Hero = () => {
   const glowOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.7]);
 
   const handleBetaClick = () => {
-    const element = document.getElementById('join-beta');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.location.href = DASHBOARD_LOGIN_URL;
   };
 
   const handleVideoClick = () => {

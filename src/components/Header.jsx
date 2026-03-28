@@ -4,7 +4,6 @@ import { Menu, X, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import Logo from '@/components/ui/logo';
-import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,7 +11,7 @@ const Header = () => {
   const [isHidden, setIsHidden] = useState(false);
   const lastScrollYRef = useRef(0);
   const { toast } = useToast();
-  const navigate = useNavigate();
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,7 +50,7 @@ const Header = () => {
       setIsMobileMenuOpen(false);
     } else {
       if (id === 'login') {
-        navigate('/login');
+        window.location.href = DASHBOARD_LOGIN_URL;
         return;
       }
       toast({
@@ -64,14 +63,7 @@ const Header = () => {
   };
 
   const handleJoinBeta = () => {
-    const ctaSection = document.getElementById('join-beta');
-    if (ctaSection) {
-      ctaSection.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
-    } else {
-        // Fallback if ID is missing or on another page
-        window.location.href = "/#join-beta";
-    }
+    window.location.href = DASHBOARD_LOGIN_URL;
   };
 
   return (

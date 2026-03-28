@@ -14,6 +14,7 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -123,7 +124,7 @@ const AdminLogin = () => {
             </form>
             
              <div className="mt-8 text-center relative z-10">
-                 <button onClick={() => navigate('/login')} className="text-sm text-gray-500 hover:text-white transition-colors">
+                 <button onClick={() => { window.location.href = DASHBOARD_LOGIN_URL; }} className="text-sm text-gray-500 hover:text-white transition-colors">
                     User Login
                  </button>
             </div>

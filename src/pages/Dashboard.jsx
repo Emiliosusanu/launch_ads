@@ -30,6 +30,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const scrollRef = useRef(null);
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
 
   const sendEmail = async (payload) => {
     try {
@@ -91,7 +92,7 @@ const Dashboard = () => {
 
         if (!emailFromLogin) {
           console.warn("No user email found, redirecting to login");
-          navigate("/login");
+          window.location.href = DASHBOARD_LOGIN_URL;
           return;
         }
 
@@ -99,7 +100,7 @@ const Dashboard = () => {
         await fetchUserDataAndMessages(emailFromLogin);
       } catch (err) {
         console.error("Dashboard init failed:", err);
-        navigate("/login");
+        window.location.href = DASHBOARD_LOGIN_URL;
       }
     };
 
@@ -246,7 +247,7 @@ const fetchUserDataAndMessages = async (email) => {
       title: "Error",
       description: error.message || "Failed to load data.",
     });
-    navigate("/login");
+    window.location.href = DASHBOARD_LOGIN_URL;
   } finally {
     setLoading(false);
   }
@@ -640,13 +641,13 @@ const fetchUserDataAndMessages = async (email) => {
               variant="ghost"
               size="icon"
               onClick={async () => {
-                localStorage.removeItem("user_email");
                 try {
+                  localStorage.removeItem("user_email");
                   await supabase.auth.signOut();
+                  window.location.href = DASHBOARD_LOGIN_URL;
                 } catch (e) {
                   console.error("Sign out error:", e);
                 }
-                navigate("/login");
               }}
               className="text-gray-400 hover:text-white hover:bg-white/5"
             >

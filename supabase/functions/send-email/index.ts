@@ -121,6 +121,7 @@ const buildEmail = ({
   appUrl: string;
 }) => {
   const safeAppUrl = typeof appUrl === 'string' && appUrl.length ? appUrl : '';
+  const dashboardLoginUrl = 'https://dashboard.inteliads.io/login';
 
   if (type === 'user_chat_message') {
     const message = typeof data?.message === 'string' ? data.message : '';
@@ -153,7 +154,7 @@ const buildEmail = ({
           <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; line-height: 1.6; color: #111;">
             <h2 style="margin:0 0 12px;">Approved</h2>
             <p style="margin:0 0 12px;">Good news — your beta access has been approved.</p>
-            ${safeAppUrl ? `<p style="margin:0 0 12px;"><a href="${safeAppUrl}/login">Open your dashboard</a></p>` : ''}
+            <p style="margin:0 0 12px;"><a href="${dashboardLoginUrl}">Open your dashboard</a></p>
           </div>
         `.trim(),
       };
@@ -195,7 +196,26 @@ const buildEmail = ({
         <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; line-height: 1.6; color: #111;">
           <h2 style="margin:0 0 12px;">You have a new message</h2>
           <div style="margin:0 0 12px; padding:12px; border:1px solid #e5e7eb; border-radius:10px; background:#fafafa; white-space:pre-wrap;">${escapeHtml(preview)}</div>
-          ${safeAppUrl ? `<p style="margin:0 0 12px;"><a href="${safeAppUrl}/login">Reply in your dashboard</a></p>` : ''}
+          <p style="margin:0 0 12px;"><a href="${dashboardLoginUrl}">Reply in your dashboard</a></p>
+        </div>
+      `.trim(),
+    };
+  }
+
+  if (type === 'support_question') {
+    const senderEmail = typeof data?.sender_email === 'string' ? data.sender_email : '';
+    const question = typeof data?.question === 'string' ? data.question : '';
+    const preview = question.length > 1200 ? question.slice(0, 1200) + '…' : question;
+
+    return {
+      to,
+      subject: 'New question from website',
+      replyTo: senderEmail,
+      html: `
+        <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; line-height: 1.6; color: #111;">
+          <h2 style="margin:0 0 12px;">New website question</h2>
+          ${senderEmail ? `<p style="margin:0 0 12px;">From: <b>${escapeHtml(senderEmail)}</b></p>` : ''}
+          <div style="margin:0 0 12px; padding:12px; border:1px solid #e5e7eb; border-radius:10px; background:#fafafa; white-space:pre-wrap;">${escapeHtml(preview)}</div>
         </div>
       `.trim(),
     };
@@ -219,6 +239,15 @@ const ensureAllowedRecipient = async ({
   serviceRoleKey: string;
   supportFallbackEmail: string;
 }) => {
+  if (type === 'support_question') {
+    const senderEmail = data?.sender_email;
+    const question = data?.question;
+    if (!isValidEmail(senderEmail)) return { ok: false, error: 'Invalid sender_email' };
+    if (typeof question !== 'string' || !question.trim()) return { ok: false, error: 'Missing question' };
+    if (to !== supportFallbackEmail) return { ok: false, error: 'Recipient not allowed' };
+    return { ok: true };
+  }
+
   if (type === 'user_chat_message') {
     const senderEmail = data?.sender_email;
     if (!isValidEmail(senderEmail)) return { ok: false, error: 'Invalid sender_email' };
@@ -368,7 +397,7 @@ Deno.serve(async (req: Request) => {
       domain: mailgunDomain,
       apiBase: mailgunApiBase,
       from,
-      replyTo,
+      replyTo: (email as any)?.replyTo || replyTo,
       to: email.to,
       subject: email.subject,
       html: email.html,

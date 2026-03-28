@@ -34,6 +34,8 @@ import Contact from '@/pages/Contact';
 import VerifyEmail from '@/pages/VerifyEmail';
 import { AuthProvider } from '@/contexts/SupabaseAuthContext';
 
+const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
+
 function MetaPixelPageView() {
   const location = useLocation();
   const first = useRef(true);
@@ -66,10 +68,7 @@ const MidBetaNudge = () => (
       <div className="flex flex-col items-center gap-2 w-full md:w-auto">
         <Button
           onClick={() => {
-            const el = document.getElementById('join-beta');
-            if (el) {
-              el.scrollIntoView({ behavior: 'smooth' });
-            }
+            window.location.href = DASHBOARD_LOGIN_URL;
           }}
           className="w-full md:w-auto bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white font-bold px-6 py-2.5 rounded-xl text-sm md:text-base shadow-[0_0_25px_rgba(255,122,61,0.4)]"
         >

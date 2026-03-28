@@ -13,6 +13,7 @@ const EditProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   
@@ -36,7 +37,7 @@ const EditProfile = () => {
       }
 
       if (!userEmail) {
-        navigate('/login');
+        window.location.href = DASHBOARD_LOGIN_URL;
         return;
       }
 

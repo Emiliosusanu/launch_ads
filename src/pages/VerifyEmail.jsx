@@ -8,6 +8,7 @@ import { supabase } from '@/lib/customSupabaseClient';
 const VerifyEmail = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
 
   const token = useMemo(() => {
     try {
@@ -103,7 +104,9 @@ const VerifyEmail = () => {
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 className="w-full sm:w-auto h-12 bg-white text-black hover:bg-gray-200 font-bold rounded-xl"
-                onClick={() => navigate('/login')}
+                onClick={() => {
+                  window.location.href = DASHBOARD_LOGIN_URL;
+                }}
                 disabled={status === 'loading'}
               >
                 Go to Login

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const Product = () => {
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
   return (
     <div className="min-h-screen bg-[#0B0B0F] text-[#F3F3F4] px-6 py-20 md:py-24">
       <div className="max-w-5xl mx-auto space-y-12">
@@ -35,10 +36,7 @@ const Product = () => {
           <div className="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <Button
               onClick={() => {
-                const el = document.getElementById('join-beta');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth' });
-                }
+                window.location.href = DASHBOARD_LOGIN_URL;
               }}
               className="w-full sm:w-auto bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white font-bold px-6 py-2.5 rounded-xl text-sm md:text-base"
             >

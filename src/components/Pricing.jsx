@@ -32,19 +32,10 @@ const plans = [
 const Pricing = () => {
   const { toast } = useToast();
   const [billingCycle, setBillingCycle] = useState('monthly');
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
 
   const handleSelect = () => {
-    const el = document.getElementById('join-beta');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      // Fallback: show a subtle toast if the section is not found
-      toast({
-        title: 'Early Access',
-        description: 'Scroll down to the Early Access section to join the waitlist.',
-        className: 'bg-[#1F1F25] border-[#6A00FF] text-white',
-      });
-    }
+    window.location.href = DASHBOARD_LOGIN_URL;
   };
 
   return (

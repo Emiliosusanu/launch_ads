@@ -1,96 +1,18 @@
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Loader2, Zap, ArrowRight } from 'lucide-react';
+import { Loader2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Logo from '@/components/ui/logo';
-import { supabase } from '@/lib/customSupabaseClient';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    if (!email) return;
-
-    setIsLoading(true);
-    
-    try {
-        // 1. Check if user exists in our database and get their role
-        const { data: userRecord, error: checkError } = await supabase
-            .from('ADSPILOT_name')
-            .select('id, email, is_admin, beta_status, approval_status')
-            .eq('email', email)
-            .limit(1)
-            .maybeSingle();
-
-        if (checkError) {
-             console.error(checkError);
-             throw new Error("Error checking user record");
-        }
-        
-        if (!userRecord) {
-             toast({
-                variant: "destructive",
-                title: "Access Denied",
-                description: "This email is not registered for beta access."
-            });
-            setIsLoading(false);
-            return;
-        }
-
-        if (userRecord.is_admin !== true && String(userRecord.beta_status || '').toLowerCase() !== 'confirmed') {
-            toast({
-                variant: "destructive",
-                title: "Email not confirmed",
-                description: "Please confirm your email first. Go back to the homepage and request a new confirmation email.",
-            });
-            setIsLoading(false);
-            return;
-        }
-
-        if (userRecord.is_admin !== true && String(userRecord.approval_status || '').toLowerCase() !== 'approved') {
-            toast({
-                variant: "destructive",
-                title: "Waiting for approval",
-                description: "Your email is confirmed. Your access will be granted after admin approval.",
-            });
-            setIsLoading(false);
-            return;
-        }
-
-        toast({
-            title: "Welcome Back",
-            description: "Accessing your dashboard...",
-            className: "bg-[#1F1F25] border-[#6A00FF] text-white"
-        });
-
-        // Store email for persistence since we are bypassing auth for demo speed
-        localStorage.setItem('user_email', email);
-
-        setTimeout(() => {
-            if (userRecord.is_admin) {
-                navigate('/admin/dashboard', { state: { userEmail: email } });
-            } else {
-                navigate('/dashboard', { state: { userEmail: email } });
-            }
-        }, 800);
-        
-    } catch (error) {
-         toast({
-            variant: "destructive",
-            title: "Error",
-            description: error.message
-        });
-        setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    window.location.href = DASHBOARD_LOGIN_URL;
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0B0B0F] flex flex-col relative overflow-hidden font-sans">
@@ -116,37 +38,25 @@ const Login = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"/>
             
             <div className="text-center mb-8 relative z-10">
-              <div className="w-14 h-14 bg-gradient-to-br from-[#1F1F25] to-[#16161a] rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-lg shadow-black/50">
-                <Zap className="w-7 h-7 text-[#6A00FF]" />
-              </div>
-              <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Instant Access</h1>
-              <p className="text-gray-400 text-sm">Enter your registered email to enter.</p>
+              <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Redirecting…</h1>
+              <p className="text-gray-400 text-sm">Taking you to the Inteliads dashboard login.</p>
             </div>
 
-            <form onSubmit={handleLogin} className="space-y-6 relative z-10">
-              <div className="space-y-2">
-                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider ml-1">Email Address</label>
-                <div className="relative group/input">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 transition-colors group-focus-within/input:text-[#6A00FF]" />
-                    <Input
-                        type="email"
-                        placeholder="name@company.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="h-14 pl-12 bg-[#0B0B0F] border-white/10 text-white placeholder:text-gray-600 focus:border-[#6A00FF] rounded-xl transition-all focus:ring-1 focus:ring-[#6A00FF] text-base"
-                        required
-                    />
-                </div>
+            <div className="space-y-4 relative z-10">
+              <div className="flex items-center justify-center text-gray-400">
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                Opening dashboard login…
               </div>
-              
-              <Button 
-                type="submit" 
-                disabled={isLoading}
+              <Button
+                type="button"
+                onClick={() => {
+                  window.location.href = DASHBOARD_LOGIN_URL;
+                }}
                 className="w-full h-14 bg-white text-black hover:bg-gray-200 font-bold text-base rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-white/5"
               >
-                {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <span className="flex items-center gap-2">Enter Dashboard <ArrowRight className="w-4 h-4"/></span>}
+                <span className="flex items-center gap-2">Continue <ArrowRight className="w-4 h-4"/></span>
               </Button>
-            </form>
+            </div>
             
             <div className="mt-8 text-center relative z-10">
                  <button onClick={() => navigate('/')} className="text-sm text-gray-500 hover:text-white transition-colors">
