@@ -1,31 +1,54 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Sparkles, Info } from 'lucide-react';
+import { Check, Crown, Rocket, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 
 const plans = [
   {
     name: "Starter",
-    price: "29",
-    description: "Perfect for authors with 1-5 books.",
-    features: ["Up to 3 Active Campaigns", "Daily Bid Optimization", "Basic Reporting", "Email Support"],
-    highlight: false
+    monthlyPrice: 29.99,
+    icon: Rocket,
+    features: [
+      "1 connected account",
+      "2 available countries",
+      "Up to 10 active rules",
+      "Maximum total spend 300$",
+      "Email support",
+      "Basic analytics",
+      "Daily rule execution",
+    ],
+    highlight: false,
   },
   {
     name: "Growth",
-    price: "79",
-    description: "For scaling authors with a growing backlist.",
-    features: ["Up to 15 Active Campaigns", "Hourly AI Optimization", "Keyword Harvesting", "Smart Automation Rules", "Priority Support"],
-    highlight: true
+    monthlyPrice: 59.99,
+    icon: Crown,
+    features: [
+      "3 connected accounts",
+      "3 available countries",
+      "Maximum total spend 2000$",
+      "Unlimited active rules",
+      "Advanced analytics",
+      "Hourly rule execution",
+      "Priority support",
+    ],
+    highlight: true,
   },
   {
-    name: "Pro",
-    price: "149",
-    description: "For full-time publishers and agencies.",
-    features: ["Unlimited Campaigns", "Real-time Optimization", "Multi-Region Support", "API Access", "Dedicated Account Manager", "White-label Reports"],
-    highlight: false
+    name: "Agency",
+    monthlyPrice: 69.99,
+    icon: Users,
+    features: [
+      "Unlimited accounts",
+      "Unlimited countries",
+      "No spend cap",
+      "Unlimited rules",
+      "Manual rule execution",
+      "Dedicated support",
+    ],
+    highlight: false,
   }
 ];
 
@@ -33,10 +56,17 @@ const Pricing = () => {
   const { toast } = useToast();
   const [billingCycle, setBillingCycle] = useState('monthly');
   const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
+  const yearlyDiscount = 0.15;
+  const launchDiscount = 0.2;
+  const launchOfferActive = true;
 
   const handleSelect = () => {
     window.location.href = DASHBOARD_LOGIN_URL;
   };
+
+  const multiplier =
+    (billingCycle === 'yearly' ? 1 - yearlyDiscount : 1) *
+    (launchOfferActive ? 1 - launchDiscount : 1);
 
   return (
     <section id="pricing" className="py-24 md:py-32 px-6 bg-[#0B0B0F] relative">
@@ -58,19 +88,28 @@ const Pricing = () => {
           </p>
           
           {/* Billing Toggle */}
-          <div className="flex items-center justify-center gap-4 mb-10">
-             <span className={`text-sm font-medium transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-gray-500'}`}>Monthly</span>
-             <button 
+          <div className="flex flex-col items-center justify-center gap-3 mb-10">
+            <div className="flex items-center justify-center gap-4">
+              <span className={`text-sm font-medium transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-gray-500'}`}>Monthly</span>
+              <button
                 onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
                 className="w-12 h-6 rounded-full bg-[#1F1F25] border border-white/10 relative px-1 flex items-center cursor-pointer"
-             >
-                <motion.div 
-                  layout 
-                  className="w-4 h-4 rounded-full bg-[#FF7A3D]" 
+              >
+                <motion.div
+                  layout
+                  className="w-4 h-4 rounded-full bg-[#FF7A3D]"
                   animate={{ x: billingCycle === 'monthly' ? 0 : 22 }}
                 />
-             </button>
-             <span className={`text-sm font-medium transition-colors ${billingCycle === 'yearly' ? 'text-white' : 'text-gray-500'}`}>Yearly <span className="text-[#2ECC71] text-xs ml-1">(Save 20%)</span></span>
+              </button>
+              <span className={`text-sm font-medium transition-colors ${billingCycle === 'yearly' ? 'text-white' : 'text-gray-500'}`}>
+                Yearly <span className="text-[#2ECC71] text-xs ml-1">(Save 15%)</span>
+              </span>
+            </div>
+            {launchOfferActive && (
+              <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
+                Launch offer: <span className="text-white font-semibold">-20%</span> for the first 20 users
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -82,33 +121,40 @@ const Pricing = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
               className={`flex flex-col p-8 rounded-3xl bg-[#1F1F25] border transition-all duration-300 relative group h-full ${
-                plan.highlight 
-                  ? 'border-[#6A00FF] shadow-[0_0_40px_rgba(106,0,255,0.15)] scale-105 z-10' 
+                plan.highlight
+                  ? 'border-[#3B82F6] shadow-[0_0_40px_rgba(59,130,246,0.15)] scale-105 z-10'
                   : 'border-white/5 hover:border-white/20'
               }`}
             >
               {plan.highlight && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-[#6A00FF] to-[#C149FF] rounded-full shadow-lg flex items-center gap-2 whitespace-nowrap z-20">
-                  <Sparkles size={14} className="text-white fill-white" />
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#3B82F6] rounded-full shadow-lg flex items-center gap-2 whitespace-nowrap z-20">
                   <span className="text-xs font-bold text-white uppercase tracking-wide">Most Popular</span>
                 </div>
               )}
 
               <div className="mb-8">
-                <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
-                <div className="flex items-baseline gap-1 mb-4">
-                  <span className="text-5xl font-bold text-white tracking-tight">
-                    ${billingCycle === 'yearly' ? Math.floor(plan.price * 0.8) : plan.price}
-                  </span>
-                  <span className="text-gray-500 font-medium">/mo</span>
+                <div className="w-10 h-10 rounded-xl bg-[#3B82F6]/10 flex items-center justify-center mb-6">
+                  <plan.icon className="w-5 h-5 text-[#3B82F6]" />
                 </div>
-                <p className="text-sm text-gray-400 leading-relaxed">{plan.description}</p>
+                <div className="flex items-end gap-2 mb-2">
+                  <span className="text-5xl font-bold text-white tracking-tight">
+                    ${Number(plan.monthlyPrice * multiplier).toFixed(2)}
+                  </span>
+                </div>
+                <div className="text-xs text-gray-500 font-semibold tracking-[0.2em] uppercase mb-4">
+                  /MONTHLY
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+                <div className="text-xs text-gray-500">
+                  {billingCycle === 'yearly' ? 'Billed yearly' : 'Billed monthly'}
+                  {launchOfferActive ? ' · Launch pricing applied' : ''}
+                </div>
               </div>
 
               <div className="flex-1 space-y-5 mb-8">
                 {plan.features.map((feature, i) => (
                   <div key={i} className="flex items-start gap-3 group/feature">
-                    <div className={`p-0.5 rounded-full mt-0.5 shrink-0 ${plan.highlight ? 'bg-[#6A00FF]/20 text-[#C149FF]' : 'bg-white/5 text-gray-400 group-hover/feature:text-white'}`}>
+                    <div className={`p-0.5 rounded-full mt-0.5 shrink-0 ${plan.highlight ? 'bg-[#2ECC71]/15 text-[#2ECC71]' : 'bg-white/5 text-gray-400 group-hover/feature:text-white'}`}>
                       <Check size={14} strokeWidth={3} />
                     </div>
                     <span className="text-sm text-gray-300 group-hover/feature:text-white transition-colors">{feature}</span>
@@ -120,11 +166,11 @@ const Pricing = () => {
                 onClick={handleSelect}
                 className={`w-full h-12 rounded-xl font-bold text-base transition-all ${
                   plan.highlight
-                    ? 'bg-[#FF7A3D] hover:bg-[#FF4F2C] text-white shadow-[0_0_20px_rgba(255,122,61,0.3)]'
-                    : 'bg-[#0B0B0F] border border-white/10 text-white hover:bg-white/10 hover:border-white/20'
+                    ? 'bg-[#06B6D4] hover:bg-[#0891B2] text-white shadow-[0_0_20px_rgba(6,182,212,0.3)]'
+                    : 'bg-transparent border border-[#3B82F6]/40 text-white hover:bg-[#3B82F6]/10'
                 }`}
               >
-                {plan.highlight ? 'Start controlling my ads' : `Choose ${plan.name}`}
+                BUY NOW
               </Button>
               
               <div className="mt-4 text-center">

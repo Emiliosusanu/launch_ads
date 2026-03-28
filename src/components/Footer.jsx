@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
+import Logo from '@/components/ui/logo';
 const Footer = () => {
   const {
     toast
@@ -18,9 +19,7 @@ const Footer = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="max-w-xs">
-            <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#6A00FF] to-[#FF7A3D] block mb-4">
-              Inteliads
-            </span>
+            <Logo className="mb-4" />
             <p className="text-sm text-gray-500 leading-relaxed">
               Intelligent automation for Amazon KDP authors. 
               Designed for the modern publisher.
@@ -76,7 +75,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-600">© 2025 Inteliads LLC. All rights reserved.</p>
+          <p className="text-xs text-gray-600">© 2026 Inteliads. All rights reserved.</p>
           <div className="flex gap-6">
             <Link to="/privacy" className="text-xs text-gray-600 hover:text-gray-400">Privacy</Link>
             <Link to="/terms" className="text-xs text-gray-600 hover:text-gray-400">Terms</Link>

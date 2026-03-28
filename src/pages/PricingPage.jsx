@@ -1,7 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const DASHBOARD_LOGIN_URL = 'https://dashboard.inteliads.io/login';
+
 const PricingPage = () => {
+  const yearlyDiscount = 0.15;
+  const launchDiscount = 0.2;
+  const launchOfferActive = true;
+  const billingCycle = 'monthly';
+  const multiplier =
+    (billingCycle === 'yearly' ? 1 - yearlyDiscount : 1) *
+    (launchOfferActive ? 1 - launchDiscount : 1);
+
   return (
     <div className="min-h-screen bg-[#0B0B0F] text-[#F3F3F4] px-6 py-20 md:py-24">
       <div className="max-w-4xl mx-auto space-y-10">
@@ -16,35 +26,44 @@ const PricingPage = () => {
         <section className="grid md:grid-cols-3 gap-6">
           <div className="rounded-2xl bg-[#1F1F25] border border-white/5 p-6 space-y-3">
             <h2 className="text-lg font-semibold">Starter</h2>
-            <p className="text-3xl font-bold">$29<span className="text-sm text-gray-500">/mo</span></p>
-            <p className="text-sm text-gray-400">For authors testing Amazon ads with a small catalogue.</p>
+            <p className="text-3xl font-bold">${Number(29.99 * multiplier).toFixed(2)}<span className="text-sm text-gray-500">/mo</span></p>
+            <p className="text-sm text-gray-400">1 connected account.</p>
             <ul className="mt-3 space-y-1 text-sm text-gray-300 list-disc list-inside">
-              <li>Up to 3 active campaigns</li>
-              <li>Daily bid optimisation</li>
-              <li>Basic reporting</li>
+              <li>2 available countries</li>
+              <li>Up to 10 active rules</li>
+              <li>Maximum total spend 300$</li>
             </ul>
+            <button onClick={() => { window.location.href = DASHBOARD_LOGIN_URL; }} className="w-full mt-3 h-11 rounded-xl border border-[#3B82F6]/40 text-sm font-semibold hover:bg-[#3B82F6]/10 transition-colors">
+              Buy now
+            </button>
           </div>
 
           <div className="rounded-2xl bg-[#1F1F25] border border-[#6A00FF] p-6 space-y-3 shadow-[0_0_40px_rgba(106,0,255,0.2)]">
             <h2 className="text-lg font-semibold">Growth</h2>
-            <p className="text-3xl font-bold">$79<span className="text-sm text-gray-500">/mo</span></p>
-            <p className="text-sm text-gray-400">For authors with multiple series ready to scale.</p>
+            <p className="text-3xl font-bold">${Number(59.99 * multiplier).toFixed(2)}<span className="text-sm text-gray-500">/mo</span></p>
+            <p className="text-sm text-gray-400">Most popular.</p>
             <ul className="mt-3 space-y-1 text-sm text-gray-300 list-disc list-inside">
-              <li>Up to 15 active campaigns</li>
-              <li>Hourly optimisation and keyword harvesting</li>
-              <li>Smart automation rules and priority support</li>
+              <li>3 connected accounts</li>
+              <li>Maximum total spend 2000$</li>
+              <li>Unlimited active rules</li>
             </ul>
+            <button onClick={() => { window.location.href = DASHBOARD_LOGIN_URL; }} className="w-full mt-3 h-11 rounded-xl bg-[#06B6D4] hover:bg-[#0891B2] text-sm font-semibold text-white transition-colors">
+              Buy now
+            </button>
           </div>
 
           <div className="rounded-2xl bg-[#1F1F25] border border-white/5 p-6 space-y-3">
-            <h2 className="text-lg font-semibold">Pro</h2>
-            <p className="text-3xl font-bold">$149<span className="text-sm text-gray-500">/mo</span></p>
-            <p className="text-sm text-gray-400">For publishers and agencies running many accounts.</p>
+            <h2 className="text-lg font-semibold">Agency</h2>
+            <p className="text-3xl font-bold">${Number(69.99 * multiplier).toFixed(2)}<span className="text-sm text-gray-500">/mo</span></p>
+            <p className="text-sm text-gray-400">For teams managing multiple accounts.</p>
             <ul className="mt-3 space-y-1 text-sm text-gray-300 list-disc list-inside">
-              <li>Unlimited campaigns</li>
-              <li>Real‑time optimisation and API access</li>
-              <li>Dedicated account manager</li>
+              <li>Unlimited accounts</li>
+              <li>No spend cap</li>
+              <li>Dedicated support</li>
             </ul>
+            <button onClick={() => { window.location.href = DASHBOARD_LOGIN_URL; }} className="w-full mt-3 h-11 rounded-xl border border-[#3B82F6]/40 text-sm font-semibold hover:bg-[#3B82F6]/10 transition-colors">
+              Buy now
+            </button>
           </div>
         </section>
 

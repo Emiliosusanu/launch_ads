@@ -133,7 +133,6 @@ const Hero = () => {
                   ))}
                 </div>
                 <span className="text-white font-bold">4.9/5</span>
-                <span className="hidden sm:inline">from 2k+ Authors</span>
               </div>
               <div className="flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-lg md:rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-default border border-white/5">
                 <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#2ECC71] shadow-[0_0_10px_#2ECC71]" />

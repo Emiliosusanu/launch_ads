@@ -38,7 +38,7 @@ const Testimonials = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 tracking-tight">
-            Trusted by 2,000+ Authors
+            Trusted by authors
           </h2>
         </motion.div>
 
