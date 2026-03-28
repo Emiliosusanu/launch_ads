@@ -109,8 +109,19 @@ function App() {
       <AuthProvider>
         <MetaPixelPageView />
         <Helmet>
-          <title>Inteliads - Intelligent Automation for KDP</title>
-          <meta name="description" content="The intelligent way to automate your Amazon Ads. Lower ACOS, save time, and scale your book sales with precision." />
+          <title>Inteliads — AI Ad Automation for Amazon KDP Authors | Lower ACOS & Save 10+ Hours/Week</title>
+          <meta name="description" content="Stop losing money on Amazon Ads. Inteliads automates bids, pauses losers, and scales winners—while you sleep. Join 10,000+ authors cutting ACOS by 30-50%. 14-day guarantee." />
+          <meta property="og:title" content="Inteliads — AI Ad Automation for Amazon KDP Authors" />
+          <meta property="og:description" content="Lower ACOS, save 10+ hours/week. Automated bid management for Amazon KDP. 14-day money-back guarantee." />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://inteliads.io" />
+          <meta property="og:image" content="https://inteliads.io/inteliads-logo.png" />
+          <meta property="og:site_name" content="Inteliads" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="Inteliads — AI Ad Automation for Amazon KDP Authors" />
+          <meta name="twitter:description" content="Lower ACOS, save 10+ hours/week. Automated bid management for Amazon KDP." />
+          <meta name="twitter:image" content="https://inteliads.io/inteliads-logo.png" />
+          <link rel="icon" type="image/png" href="/inteliads-logo.png" />
         </Helmet>
         <div className="min-h-screen bg-[#0B0B0F] text-[#F3F3F4] overflow-x-hidden font-sans">
           <Routes>
