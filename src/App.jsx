@@ -121,7 +121,7 @@ function App() {
           <meta name="twitter:title" content="Inteliads — AI Ad Automation for Amazon KDP Authors" />
           <meta name="twitter:description" content="Lower ACOS, save 10+ hours/week. Automated bid management for Amazon KDP." />
           <meta name="twitter:image" content="https://inteliads.io/inteliads-logo.png" />
-          <link rel="icon" type="image/png" href="/inteliads-logo.png" />
+          <link rel="icon" type="image/png" href="/logo.png" />
         </Helmet>
         <div className="min-h-screen bg-[#0B0B0F] text-[#F3F3F4] overflow-x-hidden font-sans">
           <Routes>
